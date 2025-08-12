@@ -2,7 +2,7 @@
 import { Suspense } from 'react';
 import ProductsGrid from '@/components/product-viewer/ProductsGrid';
 import ProductsLoading from './loading';
-import { fetchProducts } from '@/services/api/products';
+// // import removed temporarily
 
 // SEO Metadata
 export const metadata = {
