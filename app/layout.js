@@ -1,4 +1,4 @@
-// app/layout.js
+﻿// app/layout.js
 import './globals.css';
 import { Providers } from '@/components/providers/Providers';
 
@@ -6,11 +6,11 @@ import { Providers } from '@/components/providers/Providers';
 export const metadata = {
   // Basic metadata
   title: {
-    default: 'Buy Wise - המלצות מוצרים חכמות מאלי אקספרס',
+    default: 'Buy Wise - ׳”׳׳׳¦׳•׳× ׳׳•׳¦׳¨׳™׳ ׳—׳›׳׳•׳× ׳׳׳׳™ ׳׳§׳¡׳₪׳¨׳¡',
     template: '%s | Buy Wise',
   },
-  description: 'גלו את המוצרים הטובים ביותר מאלי אקספרס עם המלצות אישיות ממומחים. חסכו עד 70% על מוצרים איכותיים.',
-  keywords: ['אלי אקספרס', 'aliexpress', 'המלצות מוצרים', 'קניות אונליין', 'buy wise'],
+  description: '׳’׳׳• ׳׳× ׳”׳׳•׳¦׳¨׳™׳ ׳”׳˜׳•׳‘׳™׳ ׳‘׳™׳•׳×׳¨ ׳׳׳׳™ ׳׳§׳¡׳₪׳¨׳¡ ׳¢׳ ׳”׳׳׳¦׳•׳× ׳׳™׳©׳™׳•׳× ׳׳׳•׳׳—׳™׳. ׳—׳¡׳›׳• ׳¢׳“ 70% ׳¢׳ ׳׳•׳¦׳¨׳™׳ ׳׳™׳›׳•׳×׳™׳™׳.',
+  keywords: ['׳׳׳™ ׳׳§׳¡׳₪׳¨׳¡', 'aliexpress', '׳”׳׳׳¦׳•׳× ׳׳•׳¦׳¨׳™׳', '׳§׳ ׳™׳•׳× ׳׳•׳ ׳׳™׳™׳', 'buy wise'],
   authors: [{ name: 'Buy Wise Team' }],
   creator: 'Buy Wise',
   publisher: 'Buy Wise',
@@ -21,14 +21,14 @@ export const metadata = {
     locale: 'he_IL',
     url: process.env.NEXT_PUBLIC_SITE_URL,
     siteName: 'Buy Wise',
-    title: 'Buy Wise - המלצות מוצרים חכמות מאלי אקספרס',
-    description: 'גלו את המוצרים הטובים ביותר מאלי אקספרס עם המלצות אישיות ממומחים',
+    title: 'Buy Wise - ׳”׳׳׳¦׳•׳× ׳׳•׳¦׳¨׳™׳ ׳—׳›׳׳•׳× ׳׳׳׳™ ׳׳§׳¡׳₪׳¨׳¡',
+    description: '׳’׳׳• ׳׳× ׳”׳׳•׳¦׳¨׳™׳ ׳”׳˜׳•׳‘׳™׳ ׳‘׳™׳•׳×׳¨ ׳׳׳׳™ ׳׳§׳¡׳₪׳¨׳¡ ׳¢׳ ׳”׳׳׳¦׳•׳× ׳׳™׳©׳™׳•׳× ׳׳׳•׳׳—׳™׳',
     images: [
       {
         url: `${process.env.NEXT_PUBLIC_SITE_URL}/og-image.jpg`,
         width: 1200,
         height: 630,
-        alt: 'Buy Wise - המלצות מוצרים חכמות',
+        alt: 'Buy Wise - ׳”׳׳׳¦׳•׳× ׳׳•׳¦׳¨׳™׳ ׳—׳›׳׳•׳×',
       },
     ],
   },
@@ -36,8 +36,8 @@ export const metadata = {
   // Twitter
   twitter: {
     card: 'summary_large_image',
-    title: 'Buy Wise - המלצות מוצרים חכמות',
-    description: 'גלו את המוצרים הטובים ביותר מאלי אקספרס',
+    title: 'Buy Wise - ׳”׳׳׳¦׳•׳× ׳׳•׳¦׳¨׳™׳ ׳—׳›׳׳•׳×',
+    description: '׳’׳׳• ׳׳× ׳”׳׳•׳¦׳¨׳™׳ ׳”׳˜׳•׳‘׳™׳ ׳‘׳™׳•׳×׳¨ ׳׳׳׳™ ׳׳§׳¡׳₪׳¨׳¡',
     images: [`${process.env.NEXT_PUBLIC_SITE_URL}/twitter-card.jpg`],
     creator: '@buywise',
   },
