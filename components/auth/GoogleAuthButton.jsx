@@ -1,3 +1,5 @@
+'use client';
+
 // // src/components/auth/GoogleAuthButton.jsx
 // import React from 'react';
 

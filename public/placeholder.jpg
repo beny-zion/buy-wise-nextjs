@@ -1,0 +1,8 @@
+﻿<svg width="400" height="400" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="placeholderTitle placeholderDesc">
+  <title id="placeholderTitle">Placeholder</title>
+  <desc id="placeholderDesc">A gray square placeholder image</desc>
+  <rect width="100%" height="100%" fill="#f3f4f6"/>
+  <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" fill="#9ca3af">
+    No Image
+  </text>
+</svg>

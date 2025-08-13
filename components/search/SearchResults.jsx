@@ -1,3 +1,5 @@
+'use client';
+
 // /* needed */
 // // components/search/SearchResults.jsx - FIXED VERSION (With vendor card for both search and direct link)
 // import React from 'react';

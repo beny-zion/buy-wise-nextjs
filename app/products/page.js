@@ -2,37 +2,35 @@
 import { Suspense } from 'react';
 import ProductsGrid from '@/components/product-viewer/ProductsGrid';
 import ProductsLoading from './loading';
-// // import removed temporarily
 
 // SEO Metadata
 export const metadata = {
-  title: 'ΧΧ•Χ¦Χ¨Χ™Χ ΧΧ•ΧΧΧ¦Χ™Χ',
-  description: 'Χ’ΧΧ• ΧΧª Χ”ΧΧ•Χ¦Χ¨Χ™Χ Χ”Χ›Χ™ Χ©Χ•Χ•Χ™Χ ΧΧΧΧ™ ΧΧ§Χ΅Χ¤Χ¨Χ΅ ΧΆΧ Χ”ΧΧΧ¦Χ•Χª ΧΧ™Χ©Χ™Χ•Χª ΧΧΧ•ΧΧ—Χ™Χ',
+  title: 'ξεφψιν ξεξμφιν',
+  description: 'βμε ΰϊ δξεφψιν δλι ωεειν ξΰμι ΰχρτψρ ςν δξμφεϊ ΰιωιεϊ ξξεξηιν',
   openGraph: {
-    title: 'ΧΧ•Χ¦Χ¨Χ™Χ ΧΧ•ΧΧΧ¦Χ™Χ | Buy Wise',
-    description: 'Χ’ΧΧ• ΧΧª Χ”ΧΧ•Χ¦Χ¨Χ™Χ Χ”Χ›Χ™ Χ©Χ•Χ•Χ™Χ ΧΧΧΧ™ ΧΧ§Χ΅Χ¤Χ¨Χ΅',
+    title: 'ξεφψιν ξεξμφιν | Buy Wise',
+    description: 'βμε ΰϊ δξεφψιν δλι ωεειν ξΰμι ΰχρτψρ',
     type: 'website',
   },
 };
 
-// Χ¤Χ•Χ Χ§Χ¦Χ™Χ” Χ©Χ¨Χ¦Χ” Χ‘Χ©Χ¨Χª Χ•ΧΧ‘Χ™ΧΧ” Χ ΧªΧ•Χ Χ™Χ
+// τεπχφιδ ωψφδ αωψϊ εξαιΰδ πϊεπιν
 async function getProducts(searchParams) {
   try {
-    const params = {
+    const params = new URLSearchParams({
       page: searchParams?.page || 1,
       limit: 20,
-      category: searchParams?.category,
+      category: searchParams?.category || '',
       sort: searchParams?.sort || 'newest',
-      search: searchParams?.q,
-    };
+      search: searchParams?.q || '',
+    });
     
-    // Χ§Χ¨Χ™ΧΧ” Χ-API
+    // χψιΰδ μ-API
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3333';
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/full-products?${new URLSearchParams(params)}`,
+      `${apiUrl}/full-products?${params}`,
       {
-        next: { 
-          revalidate: 60 // Χ¨ΧΆΧ Χ•Χ Χ›Χ Χ“Χ§Χ”
-        },
+        next: { revalidate: 60 },
         headers: {
           'Content-Type': 'application/json',
         },
@@ -40,7 +38,8 @@ async function getProducts(searchParams) {
     );
     
     if (!response.ok) {
-      throw new Error('Failed to fetch products');
+      console.error('Failed to fetch products:', response.status);
+      return { products: [], total: 0 };
     }
     
     const data = await response.json();
@@ -51,72 +50,33 @@ async function getProducts(searchParams) {
   }
 }
 
-// Χ”Χ§Χ•ΧΧ¤Χ•Χ Χ ΧΧ” Χ”Χ¨ΧΧ©Χ™Χª - Server Component
 export default async function ProductsPage({ searchParams }) {
-  // Χ”Χ ΧªΧ•Χ Χ™Χ Χ ΧΧΆΧ Χ™Χ Χ‘Χ©Χ¨Χª!
   const { products, total } = await getProducts(searchParams);
   
-  // Structured Data for Products List
-  const structuredData = {
-    '@context': 'https://schema.org',
-    '@type': 'ItemList',
-    itemListElement: products.map((product, index) => ({
-      '@type': 'Product',
-      position: index + 1,
-      name: product.title,
-      description: product.recommendation || product.description,
-      image: product.displayImage,
-      offers: {
-        '@type': 'Offer',
-        price: product.price || 0,
-        priceCurrency: 'ILS',
-        availability: 'https://schema.org/InStock',
-      },
-    })),
-  };
-  
   return (
-    <>
-      {/* Structured Data */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(structuredData),
-        }}
-      />
+    <main className="min-h-screen">
+      <section className="bg-gradient-to-b from-primary-50 to-white py-8 sm:py-12">
+        <div className="container-custom">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-center mb-4">
+            <span className="text-gradient">ξεφψιν ξεξμφιν</span>
+          </h1>
+          <p className="text-center text-gray-600 text-lg max-w-2xl mx-auto">
+            δξεφψιν δλι ωεειν ξΰμι ΰχρτψρ, παηψε αχτιγδ ςμ ιγι δξεξηιν ωμπε
+          </p>
+        </div>
+      </section>
       
-      {/* Main Content */}
-      <main className="min-h-screen">
-        {/* Header Section */}
-        <section className="bg-gradient-to-b from-primary-50 to-white py-8 sm:py-12">
-          <div className="container-custom">
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-center mb-4">
-              <span className="text-gradient">ΧΧ•Χ¦Χ¨Χ™Χ ΧΧ•ΧΧΧ¦Χ™Χ</span>
-            </h1>
-            <p className="text-center text-gray-600 text-lg max-w-2xl mx-auto">
-              Χ”ΧΧ•Χ¦Χ¨Χ™Χ Χ”Χ›Χ™ Χ©Χ•Χ•Χ™Χ ΧΧΧΧ™ ΧΧ§Χ΅Χ¤Χ¨Χ΅, Χ Χ‘Χ—Χ¨Χ• Χ‘Χ§Χ¤Χ™Χ“Χ” ΧΆΧ Χ™Χ“Χ™ Χ”ΧΧ•ΧΧ—Χ™Χ Χ©ΧΧ Χ•
-            </p>
-          </div>
-        </section>
-        
-        {/* Filters Section (Client Component) */}
-        <Suspense fallback={<div className="h-16" />}>
-          {/* Χ Χ•Χ΅Χ™Χ£ ΧΧª ProductFilters Χ›ΧΧ */}
-        </Suspense>
-        
-        {/* Products Grid */}
-        <section className="section-padding">
-          <div className="container-custom">
-            <Suspense fallback={<ProductsLoading />}>
-              <ProductsGrid 
-                initialProducts={products}
-                totalProducts={total}
-                currentPage={searchParams?.page || 1}
-              />
-            </Suspense>
-          </div>
-        </section>
-      </main>
-    </>
+      <section className="section-padding">
+        <div className="container-custom">
+          <Suspense fallback={<ProductsLoading />}>
+            <ProductsGrid 
+              initialProducts={products || []}
+              totalProducts={total || 0}
+              currentPage={searchParams?.page || 1}
+            />
+          </Suspense>
+        </div>
+      </section>
+    </main>
   );
 }

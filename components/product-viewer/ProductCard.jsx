@@ -1,3 +1,5 @@
+'use client';
+
 // components/product-viewer/ProductCard.jsx
 'use client';
 

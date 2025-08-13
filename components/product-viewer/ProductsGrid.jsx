@@ -1,3 +1,5 @@
+'use client';
+
 // components/product-viewer/ProductsGrid.jsx
 'use client';
 

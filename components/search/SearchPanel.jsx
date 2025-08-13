@@ -1,3 +1,5 @@
+'use client';
+
 /* needed */
 // components/search/SearchPanel.jsx - UPDATED VERSION (With vendor support)
 import React, { useRef, useEffect, useState } from 'react';
