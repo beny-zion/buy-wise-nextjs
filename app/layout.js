@@ -1,22 +1,19 @@
-﻿import './globals.css';
-import { Providers } from '@/components/providers/Providers';
+﻿import './globals.css'
+import Layout from '@/components/layout/Layout'
 
 export const metadata = {
-  title: {
-    default: 'Buy Wise',
-    template: '%s | Buy Wise',
-  },
-  description: 'Best products from AliExpress',
-};
+  title: 'Buy Wise',
+  description: 'המלצות מוצרים חכמות מאלי אקספרס',
+}
 
 export default function RootLayout({ children }) {
-  return (
-    <html lang="he" dir="rtl">
-      <body>
-        <Providers>
-          {children}
-        </Providers>
-      </body>
-    </html>
-  );
+  return (
+    <html lang="he" dir="rtl">
+      <body>
+        <Layout>
+          {children}
+        </Layout>
+      </body>
+    </html>
+  )
 }

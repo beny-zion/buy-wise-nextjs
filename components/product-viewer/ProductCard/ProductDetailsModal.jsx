@@ -1,3 +1,5 @@
+﻿'use client';
+
 /* needed */
 // components/ProductViewer/ProductCard/ProductDetailsModal.jsx
 import React, { useState, useRef, useEffect } from 'react';
@@ -9,18 +11,18 @@ import { formatPrice } from '../../../utils/formatters';
 import CommentSection from '../../comments/CommentSection';
 
 /**
- * רכיב מודאל פרטי המוצר - משתמש ב-React Portal לרינדור מחוץ להיררכיית ה-DOM הרגילה
+ * ׳¨׳›׳™׳‘ ׳׳•׳“׳׳ ׳₪׳¨׳˜׳™ ׳”׳׳•׳¦׳¨ - ׳׳©׳×׳׳© ׳‘-React Portal ׳׳¨׳™׳ ׳“׳•׳¨ ׳׳—׳•׳¥ ׳׳”׳™׳¨׳¨׳›׳™׳™׳× ׳”-DOM ׳”׳¨׳’׳™׳׳”
  */
 const ProductDetailsModal = ({ product, onClose, onBuyClick, onShareClick, productImages = [] }) => {
-    // ניהול סטייט
+    // ׳ ׳™׳”׳•׳ ׳¡׳˜׳™׳™׳˜
     const [activeTab, setActiveTab] = useState('details');
     const [fullscreenImage, setFullscreenImage] = useState(null);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     
-    // רפרנסים לאלמנטים
+    // ׳¨׳₪׳¨׳ ׳¡׳™׳ ׳׳׳׳׳ ׳˜׳™׳
     const modalRef = useRef(null);
     
-    // בדיקה אם יש וידאו
+    // ׳‘׳“׳™׳§׳” ׳׳ ׳™׳© ׳•׳™׳“׳׳•
     const hasVideo = !!(
         (product?.aliExpressData?.product_video_url) || 
         (product?.videos && product?.videos.length > 0)
@@ -30,7 +32,7 @@ const ProductDetailsModal = ({ product, onClose, onBuyClick, onShareClick, produ
         product?.aliExpressData?.product_video_url || 
         (product?.videos && product?.videos.length > 0 ? product?.videos[0] : null);
 
-    // טיפול בלחיצת מקש Escape
+    // ׳˜׳™׳₪׳•׳ ׳‘׳׳—׳™׳¦׳× ׳׳§׳© Escape
     useEffect(() => {
         const handleEscapeKey = (e) => {
             if (e.key === 'Escape') {
@@ -46,7 +48,7 @@ const ProductDetailsModal = ({ product, onClose, onBuyClick, onShareClick, produ
         return () => document.removeEventListener('keydown', handleEscapeKey);
     }, [onClose, fullscreenImage]);
 
-    // טיפול במניעת גלילה בגוף העמוד כשהמודל פתוח
+    // ׳˜׳™׳₪׳•׳ ׳‘׳׳ ׳™׳¢׳× ׳’׳׳™׳׳” ׳‘׳’׳•׳£ ׳”׳¢׳׳•׳“ ׳›׳©׳”׳׳•׳“׳ ׳₪׳×׳•׳—
     useEffect(() => {
         document.body.style.overflow = 'hidden';
         return () => {
@@ -54,13 +56,13 @@ const ProductDetailsModal = ({ product, onClose, onBuyClick, onShareClick, produ
         };
     }, []);
 
-    // פונקציה לפתיחת תמונה במסך מלא
+    // ׳₪׳•׳ ׳§׳¦׳™׳” ׳׳₪׳×׳™׳—׳× ׳×׳׳•׳ ׳” ׳‘׳׳¡׳ ׳׳׳
     const handleImageClick = (index) => {
         setFullscreenImage(productImages[index]);
         setCurrentImageIndex(index);
     };
 
-    // פונקציות ניווט בין תמונות
+    // ׳₪׳•׳ ׳§׳¦׳™׳•׳× ׳ ׳™׳•׳•׳˜ ׳‘׳™׳ ׳×׳׳•׳ ׳•׳×
     const nextImage = () => {
         if (fullscreenImage && productImages.length > 1) {
             const newIndex = (currentImageIndex + 1) % productImages.length;
@@ -77,10 +79,10 @@ const ProductDetailsModal = ({ product, onClose, onBuyClick, onShareClick, produ
         }
     };
 
-    // התוכן של המודל
+    // ׳”׳×׳•׳›׳ ׳©׳ ׳”׳׳•׳“׳
     const modalContent = (
         <>
-            {/* תצוגת תמונה במסך מלא */}
+            {/* ׳×׳¦׳•׳’׳× ׳×׳׳•׳ ׳” ׳‘׳׳¡׳ ׳׳׳ */}
             <AnimatePresence>
                 {fullscreenImage && (
                     <motion.div 
@@ -90,21 +92,21 @@ const ProductDetailsModal = ({ product, onClose, onBuyClick, onShareClick, produ
                         exit={{ opacity: 0 }}
                         onClick={() => setFullscreenImage(null)}
                     >
-                        {/* כפתור סגירה */}
+                        {/* ׳›׳₪׳×׳•׳¨ ׳¡׳’׳™׳¨׳” */}
                         <motion.button
                             onClick={() => setFullscreenImage(null)}
                             className="absolute top-4 right-4 p-3 bg-white/10 backdrop-blur-md rounded-xl z-[12001] hover:bg-white/20 transition-all"
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.9 }}
-                            aria-label="סגור תצוגת מסך מלא"
+                            aria-label="׳¡׳’׳•׳¨ ׳×׳¦׳•׳’׳× ׳׳¡׳ ׳׳׳"
                         >
                             <X size={20} className="text-white" />
                         </motion.button>
 
-                        {/* תמונה */}
+                        {/* ׳×׳׳•׳ ׳” */}
                         <motion.img 
                             src={fullscreenImage} 
-                            alt="תצוגת מסך מלא" 
+                            alt="׳×׳¦׳•׳’׳× ׳׳¡׳ ׳׳׳" 
                             className="max-w-full max-h-[85vh] object-contain rounded-2xl shadow-2xl"
                             initial={{ scale: 0.9, opacity: 0 }}
                             animate={{ scale: 1, opacity: 1 }}
@@ -112,7 +114,7 @@ const ProductDetailsModal = ({ product, onClose, onBuyClick, onShareClick, produ
                             transition={{ type: "spring", damping: 25, stiffness: 300 }}
                         />
 
-                        {/* אינדיקטור תמונות */}
+                        {/* ׳׳™׳ ׳“׳™׳§׳˜׳•׳¨ ׳×׳׳•׳ ׳•׳× */}
                         {productImages.length > 1 && (
                             <motion.div 
                                 className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-white/10 backdrop-blur-md px-3 py-1.5 rounded-xl text-white text-sm font-medium z-[12001]"
@@ -123,7 +125,7 @@ const ProductDetailsModal = ({ product, onClose, onBuyClick, onShareClick, produ
                             </motion.div>
                         )}
 
-                        {/* כפתורי ניווט */}
+                        {/* ׳›׳₪׳×׳•׳¨׳™ ׳ ׳™׳•׳•׳˜ */}
                         {productImages.length > 1 && (
                             <>
                                 <motion.button
@@ -134,7 +136,7 @@ const ProductDetailsModal = ({ product, onClose, onBuyClick, onShareClick, produ
                                     className="absolute left-4 top-1/2 transform -translate-y-1/2 p-3 bg-white/10 backdrop-blur-md rounded-xl text-white z-[12001] hover:bg-white/20 transition-all"
                                     whileHover={{ scale: 1.1 }}
                                     whileTap={{ scale: 0.9 }}
-                                    aria-label="תמונה קודמת"
+                                    aria-label="׳×׳׳•׳ ׳” ׳§׳•׳“׳׳×"
                                 >
                                     <ChevronLeft size={20} />
                                 </motion.button>
@@ -146,7 +148,7 @@ const ProductDetailsModal = ({ product, onClose, onBuyClick, onShareClick, produ
                                     className="absolute right-4 top-1/2 transform -translate-y-1/2 p-3 bg-white/10 backdrop-blur-md rounded-xl text-white z-[12001] hover:bg-white/20 transition-all"
                                     whileHover={{ scale: 1.1 }}
                                     whileTap={{ scale: 0.9 }}
-                                    aria-label="תמונה הבאה"
+                                    aria-label="׳×׳׳•׳ ׳” ׳”׳‘׳׳”"
                                 >
                                     <ChevronRight size={20} />
                                 </motion.button>
@@ -156,7 +158,7 @@ const ProductDetailsModal = ({ product, onClose, onBuyClick, onShareClick, produ
                 )}
             </AnimatePresence>
 
-            {/* מודאל פרטי מוצר */}
+            {/* ׳׳•׳“׳׳ ׳₪׳¨׳˜׳™ ׳׳•׳¦׳¨ */}
             <motion.div 
                 className="fixed inset-0 bg-gradient-to-br from-black/60 via-purple-900/20 to-black/60 backdrop-blur-md z-[11000] flex justify-center p-4"
                 onClick={onClose}
@@ -175,18 +177,18 @@ const ProductDetailsModal = ({ product, onClose, onBuyClick, onShareClick, produ
                     transition={{ type: 'spring', damping: 25, stiffness: 300 }}
                     style={{ maxHeight: '95vh' }}
                 >
-                    {/* כפתור סגירה */}
+                    {/* ׳›׳₪׳×׳•׳¨ ׳¡׳’׳™׳¨׳” */}
                     <motion.button
                         onClick={onClose}
                         className="absolute top-3 left-3 p-2 bg-white/10 backdrop-blur-md rounded-xl text-gray-700 z-30 hover:bg-white/20 transition-all"
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
-                        aria-label="סגור"
+                        aria-label="׳¡׳’׳•׳¨"
                     >
                         <X size={18} />
                     </motion.button>
 
-                    {/* טאבים מעוצבים */}
+                    {/* ׳˜׳׳‘׳™׳ ׳׳¢׳•׳¦׳‘׳™׳ */}
                     <div className="sticky top-0 bg-white/80 backdrop-blur-xl z-20 border-b border-white/20">
                         <div className="flex p-1.5 gap-1.5">
                             <motion.button
@@ -200,7 +202,7 @@ const ProductDetailsModal = ({ product, onClose, onBuyClick, onShareClick, produ
                             >
                                 <span className="relative z-10 flex items-center justify-center gap-1.5">
                                     <Sparkles size={14} />
-                                    פרטי מוצר
+                                    ׳₪׳¨׳˜׳™ ׳׳•׳¦׳¨
                                 </span>
                             </motion.button>
                             <motion.button
@@ -212,14 +214,14 @@ const ProductDetailsModal = ({ product, onClose, onBuyClick, onShareClick, produ
                                 whileHover={{ scale: 1.02 }}
                                 whileTap={{ scale: 0.98 }}
                             >
-                                <span className="relative z-10">תגובות ושאלות</span>
+                                <span className="relative z-10">׳×׳’׳•׳‘׳•׳× ׳•׳©׳׳׳•׳×</span>
                             </motion.button>
                         </div>
                     </div>
 
-                    {/* תוכן טאבים */}
+                    {/* ׳×׳•׳›׳ ׳˜׳׳‘׳™׳ */}
                     <div className="flex-grow overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
-                        {/* טאב פרטי מוצר */}
+                        {/* ׳˜׳׳‘ ׳₪׳¨׳˜׳™ ׳׳•׳¦׳¨ */}
                         <AnimatePresence mode="wait">
                             {activeTab === 'details' && (
                                 <motion.div 
@@ -229,7 +231,7 @@ const ProductDetailsModal = ({ product, onClose, onBuyClick, onShareClick, produ
                                     exit={{ opacity: 0, y: -20 }}
                                     transition={{ duration: 0.3 }}
                                 >
-                                    {/* גלריית תמונות */}
+                                    {/* ׳’׳׳¨׳™׳™׳× ׳×׳׳•׳ ׳•׳× */}
                                     <div className="h-80 bg-gradient-to-br from-gray-50 to-gray-100 relative">
                                         {hasVideo ? (
                                             <div className="w-full h-full rounded-2xl overflow-hidden m-2" style={{ height: 'calc(100% - 16px)', width: 'calc(100% - 16px)' }}>
@@ -253,37 +255,37 @@ const ProductDetailsModal = ({ product, onClose, onBuyClick, onShareClick, produ
                                             </div>
                                         )}
 
-                                        {/* כפתור זום */}
+                                        {/* ׳›׳₪׳×׳•׳¨ ׳–׳•׳ */}
                                         {!hasVideo && productImages.length > 0 && (
                                             <motion.button
                                                 onClick={() => handleImageClick(0)}
                                                 className="absolute top-2 right-2 p-1.5 bg-white/10 backdrop-blur-md rounded-lg text-gray-700 z-20 hover:bg-white/20 transition-all"
                                                 whileHover={{ scale: 1.1 }}
                                                 whileTap={{ scale: 0.9 }}
-                                                aria-label="הגדל לתצוגת מסך מלא"
+                                                aria-label="׳”׳’׳“׳ ׳׳×׳¦׳•׳’׳× ׳׳¡׳ ׳׳׳"
                                             >
                                                 <ZoomIn size={16} />
                                             </motion.button>
                                         )}
                                     </div>
 
-                                    {/* פרטי מוצר */}
+                                    {/* ׳₪׳¨׳˜׳™ ׳׳•׳¦׳¨ */}
                                     <div className="p-6 space-y-6">
-                                        {/* כותרת מוצר */}
+                                        {/* ׳›׳•׳×׳¨׳× ׳׳•׳¦׳¨ */}
                                         <div>
                                             <h2 className="text-2xl font-bold text-gray-900 mb-3 leading-tight">
-                                                {product?.title || 'פרטי מוצר'}
+                                                {product?.title || '׳₪׳¨׳˜׳™ ׳׳•׳¦׳¨'}
                                             </h2>
                                             
-                                            {/* סטטיסטיקות ללא מחיר */}
+                                            {/* ׳¡׳˜׳˜׳™׳¡׳˜׳™׳§׳•׳× ׳׳׳ ׳׳—׳™׳¨ */}
                                             <div className="flex justify-end items-start">
-                                                {/* // 🔧 מחיר הוסר זמנית */}
+                                                {/* // נ”§ ׳׳—׳™׳¨ ׳”׳•׳¡׳¨ ׳–׳׳ ׳™׳× */}
                                                 {/* <div className="space-y-2">
                                                     <div className="text-3xl font-bold bg-gradient-to-r from-[#FFA066] to-[#FF6B6B] bg-clip-text text-transparent">
                                                         {formatPrice(product?.aliExpressData?.price || 0)}
                                                     </div>
                                                     <div className="text-xs text-gray-500">
-                                                        מחיר משוער - המחיר הסופי נקבע באתר אליאקספרס
+                                                        ׳׳—׳™׳¨ ׳׳©׳•׳¢׳¨ - ׳”׳׳—׳™׳¨ ׳”׳¡׳•׳₪׳™ ׳ ׳§׳‘׳¢ ׳‘׳׳×׳¨ ׳׳׳™׳׳§׳¡׳₪׳¨׳¡
                                                     </div>
                                                 </div> */}
 
@@ -308,14 +310,14 @@ const ProductDetailsModal = ({ product, onClose, onBuyClick, onShareClick, produ
                                                     )}
                                                     {product?.aliExpressData?.stats?.sales && (
                                                         <div className="text-sm text-gray-500">
-                                                            {product.aliExpressData.stats.sales.toLocaleString()} נמכרו
+                                                            {product.aliExpressData.stats.sales.toLocaleString()} ׳ ׳׳›׳¨׳•
                                                         </div>
                                                     )}
                                                 </div>
                                             </div>
                                         </div>
 
-                                        {/* קטגוריות */}
+                                        {/* ׳§׳˜׳’׳•׳¨׳™׳•׳× */}
                                         {(product?.aliExpressData?.categories?.main?.name || product?.aliExpressData?.categories?.sub?.name) && (
                                             <div className="flex flex-wrap gap-2">
                                                 {product?.aliExpressData?.categories?.main?.name && (
@@ -331,28 +333,28 @@ const ProductDetailsModal = ({ product, onClose, onBuyClick, onShareClick, produ
                                             </div>
                                         )}
 
-                                        {/* המלצת מוכר */}
+                                        {/* ׳”׳׳׳¦׳× ׳׳•׳›׳¨ */}
                                         <div className="bg-gradient-to-r from-orange-50 to-yellow-50 p-5 rounded-2xl border border-orange-200 relative overflow-hidden">
                                             <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-orange-200/30 to-yellow-200/30 rounded-full blur-xl"></div>
                                             <div className="relative z-10">
                                                 <div className="flex items-center gap-3 mb-3">
                                                     <img
                                                         src={product?.vendorId?.profileImage || '/default-avatar.png'}
-                                                        alt={product?.vendorId?.fullName || 'ממליץ'}
+                                                        alt={product?.vendorId?.fullName || '׳׳׳׳™׳¥'}
                                                         className="w-12 h-12 rounded-2xl ring-2 ring-orange-200 shadow-md"
                                                     />
                                                     <div className="flex-1">
                                                         <div className="font-bold text-gray-900">
-                                                            המלצה של {product?.vendorId?.fullName || 'ממליץ'}
+                                                            ׳”׳׳׳¦׳” ׳©׳ {product?.vendorId?.fullName || '׳׳׳׳™׳¥'}
                                                         </div>
                                                         <div className="text-sm text-orange-600">
-                                                           {product?.vendorId?.bio || 'מוכר מומחה'}
+                                                           {product?.vendorId?.bio || '׳׳•׳›׳¨ ׳׳•׳׳—׳”'}
                                                             </div>
                                                     </div>
                                                     <Heart size={20} className="text-orange-500" />
                                                 </div>
                                                 <p className="text-gray-800 leading-relaxed">
-                                                    {product?.recommendation || 'אין המלצה'}
+                                                    {product?.recommendation || '׳׳™׳ ׳”׳׳׳¦׳”'}
                                                 </p>
                                             </div>
                                         </div>
@@ -360,7 +362,7 @@ const ProductDetailsModal = ({ product, onClose, onBuyClick, onShareClick, produ
                                 </motion.div>
                             )}
 
-                            {/* טאב תגובות */}
+                            {/* ׳˜׳׳‘ ׳×׳’׳•׳‘׳•׳× */}
                             {activeTab === 'comments' && (
                                 <motion.div 
                                     dir="rtl"
@@ -378,7 +380,7 @@ const ProductDetailsModal = ({ product, onClose, onBuyClick, onShareClick, produ
                         </AnimatePresence>
                     </div>
 
-                    {/* כפתורי פעולה קבועים בתחתית */}
+                    {/* ׳›׳₪׳×׳•׳¨׳™ ׳₪׳¢׳•׳׳” ׳§׳‘׳•׳¢׳™׳ ׳‘׳×׳—׳×׳™׳× */}
                     <div className="w-full p-4 bg-white/80 backdrop-blur-xl border-t border-white/20 flex items-center gap-3" dir="rtl">
                         <motion.button
                             onClick={(e) => {
@@ -394,7 +396,7 @@ const ProductDetailsModal = ({ product, onClose, onBuyClick, onShareClick, produ
                             <div className="absolute inset-0 bg-gradient-to-r from-[#FF8C3D] via-[#FF5252] to-[#7C3AED] opacity-0 hover:opacity-100 transition-opacity"></div>
                             <span className="relative z-10 flex items-center gap-2">
                                 <ShoppingCart size={18} />
-                                קנה באלי אקספרס
+                                ׳§׳ ׳” ׳‘׳׳׳™ ׳׳§׳¡׳₪׳¨׳¡
                             </span>
                         </motion.button>
                         
@@ -407,7 +409,7 @@ const ProductDetailsModal = ({ product, onClose, onBuyClick, onShareClick, produ
                                      flex items-center justify-center hover:bg-white transition-all duration-200"
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.9 }}
-                            aria-label="שתף מוצר"
+                            aria-label="׳©׳×׳£ ׳׳•׳¦׳¨"
                         >
                             <Share2 size={18} />
                         </motion.button>
@@ -417,7 +419,7 @@ const ProductDetailsModal = ({ product, onClose, onBuyClick, onShareClick, produ
         </>
     );
 
-    // שימוש ב-React Portal כדי להציג את המודל מחוץ להיררכיית ה-DOM הרגילה
+    // ׳©׳™׳׳•׳© ׳‘-React Portal ׳›׳“׳™ ׳׳”׳¦׳™׳’ ׳׳× ׳”׳׳•׳“׳ ׳׳—׳•׳¥ ׳׳”׳™׳¨׳¨׳›׳™׳™׳× ׳”-DOM ׳”׳¨׳’׳™׳׳”
     return createPortal(modalContent, document.body);
 };
 

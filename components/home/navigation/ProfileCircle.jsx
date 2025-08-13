@@ -1,3 +1,5 @@
+﻿'use client';
+
 /* needed */
 
 // components/home/navigation/ProfileCircle.jsx
@@ -20,7 +22,7 @@ const ProfileCircle = ({ isNavbar = false }) => {
     }
   };
 
-  // אם זה בנב בר, החזר רק את התוכן ללא positioning
+  // ׳׳ ׳–׳” ׳‘׳ ׳‘ ׳‘׳¨, ׳”׳—׳–׳¨ ׳¨׳§ ׳׳× ׳”׳×׳•׳›׳ ׳׳׳ positioning
   if (isNavbar) {
     return (
       <div className="relative w-full h-full">
@@ -34,7 +36,7 @@ const ProfileCircle = ({ isNavbar = false }) => {
           {user?.profileImage ? (
             <img 
               src={user.profileImage} 
-              alt="פרופיל"
+              alt="׳₪׳¨׳•׳₪׳™׳"
               className="w-full h-full object-cover" 
             />
           ) : (
@@ -42,7 +44,7 @@ const ProfileCircle = ({ isNavbar = false }) => {
           )}
         </button>
         
-        {/* הוספת התראות למוכרים - עכשיו מחוץ לכפתור */}
+        {/* ׳”׳•׳¡׳₪׳× ׳”׳×׳¨׳׳•׳× ׳׳׳•׳›׳¨׳™׳ - ׳¢׳›׳©׳™׳• ׳׳—׳•׳¥ ׳׳›׳₪׳×׳•׳¨ */}
         {user?.isVendor && (
           <div className="absolute -top-0.5 -right-0.5 z-10">
             <NotificationBadge />
@@ -51,14 +53,14 @@ const ProfileCircle = ({ isNavbar = false }) => {
         
         {showTooltip && (
           <div className="absolute top-full right-0 mt-2 bg-gray-900 text-white text-xs py-1 px-2 rounded whitespace-nowrap z-50">
-            {user ? 'אזור אישי' : 'התחברות'}
+            {user ? '׳׳–׳•׳¨ ׳׳™׳©׳™' : '׳”׳×׳—׳‘׳¨׳•׳×'}
           </div>
         )}
       </div>
     );
   }
 
-  // הגרסה המקורית לפינה התחתונה
+  // ׳”׳’׳¨׳¡׳” ׳”׳׳§׳•׳¨׳™׳× ׳׳₪׳™׳ ׳” ׳”׳×׳—׳×׳•׳ ׳”
   return (
     <div className="fixed bottom-6 left-6 z-50">
       <button
@@ -71,21 +73,21 @@ const ProfileCircle = ({ isNavbar = false }) => {
         {user?.profileImage ? (
           <img 
             src={user.profileImage} 
-            alt="פרופיל"
+            alt="׳₪׳¨׳•׳₪׳™׳"
             className="w-full h-full object-cover" 
           />
         ) : (
           <User className="w-6 h-6 text-gray-600" />
         )}
         
-        {/* הוספת התראות למוכרים */}
+        {/* ׳”׳•׳¡׳₪׳× ׳”׳×׳¨׳׳•׳× ׳׳׳•׳›׳¨׳™׳ */}
         {user?.isVendor && <NotificationBadge />}
       </button>
       
       {showTooltip && (
         <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 
                       bg-gray-900 text-white text-sm py-1 px-2 rounded whitespace-nowrap">
-          {user ? 'אזור אישי' : 'התחברות'}
+          {user ? '׳׳–׳•׳¨ ׳׳™׳©׳™' : '׳”׳×׳—׳‘׳¨׳•׳×'}
         </div>
       )}
     </div>

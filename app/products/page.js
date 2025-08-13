@@ -1,40 +1,77 @@
-﻿import { Suspense } from 'react';
-import ProductsGrid from '@/components/product-viewer/ProductsGrid';
-import ProductsLoading from './loading';
+﻿'use client';
 
-export const metadata = {
-  title: 'Products',
-  description: 'Best products from AliExpress'
-};
+import { useState, useEffect } from 'react';
+import ProductCard from '@/components/product-viewer/ProductCard';
+import { ProductModalProvider } from '@/contexts/ProductModalContext';
+import ProductDetailsModal from '@/components/product-viewer/ProductCard/ProductDetailsModal';
 
-async function getProducts(params) {
-  try {
-    const searchParams = new URLSearchParams({
-      page: params?.page || 1,
-      limit: 20
-    });
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3333';
-    const response = await fetch(`${apiUrl}/full-products?${searchParams}`, {
-      next: { revalidate: 60 }
-    });
-    if (!response.ok) return { products: [], total: 0 };
-    return await response.json();
-  } catch (error) {
-    console.error('Error:', error);
-    return { products: [], total: 0 };
+export default function ProductsPage() {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const fetchProducts = async () => {
+    try {
+      const response = await fetch('http://localhost:3333/full-products');
+      if (response.ok) {
+        const data = await response.json();
+        setProducts(data.products || []);
+      }
+    } catch (error) {
+      console.error('Error fetching products:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleProductClick = (product) => {
+    setSelectedProduct(product);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedProduct(null);
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="w-12 h-12 relative">
+          <div className="absolute inset-0 border-4 border-t-[#FFA066] border-r-[#FF6B6B] border-b-[#5C9EFF] border-l-transparent rounded-full animate-spin" />
+        </div>
+      </div>
+    );
   }
-}
 
-export default async function ProductsPage(props) {
-  const searchParams = await props.searchParams;
-  const { products, total } = await getProducts(searchParams);
-  
   return (
-    <main className="min-h-screen p-8">
-      <h1 className="text-4xl font-bold text-center mb-8">Products</h1>
-      <Suspense fallback={<ProductsLoading />}>
-        <ProductsGrid initialProducts={products || []} totalProducts={total || 0} currentPage={1} />
-      </Suspense>
-    </main>
+    <ProductModalProvider value={{ isModalOpen, selectedProduct, openModal: handleProductClick, closeModal }}>
+      <div className="min-h-screen bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {products.map((product) => (
+              <ProductCard 
+                key={product._id} 
+                product={product}
+                onClick={() => handleProductClick(product)}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* Product Modal */}
+        {isModalOpen && selectedProduct && (
+          <ProductDetailsModal 
+            product={selectedProduct} 
+            onClose={closeModal}
+          />
+        )}
+      </div>
+    </ProductModalProvider>
   );
 }

@@ -1,13 +1,12 @@
-/* needed */
-// components/layout/Layout.jsx
+﻿'use client';
+
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import SearchPanel from '../search/SearchPanel';
-import SearchResults from '../search/SearchResults'
+import SearchResults from '../search/SearchResults';
 import ProfileCircle from '../home/navigation/ProfileCircle';
-import logoSvg from '../../assets/logo/new.svg';
 
-const Layout = () => {
+const Layout = ({ children }) => {
   return (
     <div className="min-h-screen bg-gray-100">
       <header className="fixed top-0 right-0 left-0 z-40">
@@ -16,11 +15,9 @@ const Layout = () => {
             <div className="flex items-center gap-4">
               {/* Profile Circle - Right */}
               <div className="flex-shrink-0 relative">
-                {/* הוספנו padding נוסף לקונטיינר כדי שה-badge לא יחתך */}
                 <div className="p-1">
                   <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#FFA066] to-[#FF6B6B] p-0.5 relative">
                     <div className="w-full h-full rounded-full bg-white flex items-center justify-center">
-                      {/* הסרנו overflow-hidden מהדיב הזה */}
                       <div className="w-8 h-8 rounded-full relative">
                         <ProfileCircle isNavbar={true} />
                       </div>
@@ -38,7 +35,7 @@ const Layout = () => {
               <div className="flex-shrink-0">
                 <div className="w-9 h-9 flex items-center justify-center">
                   <img 
-                    src={logoSvg} 
+                    src="/logo/new.svg" 
                     alt="BuyWise" 
                     className="h-7 w-auto object-contain filter drop-shadow-sm"
                   />
@@ -54,11 +51,8 @@ const Layout = () => {
       
       {/* Main Content */}
       <main className="pt-[72px] pb-20">
-        <Outlet />
+        {children}
       </main>
-      
-      {/* Profile Circle - Bottom Left (Original) */}
-      {/* <ProfileCircle /> */}
     </div>
   );
 };
