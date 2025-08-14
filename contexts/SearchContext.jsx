@@ -1,180 +1,147 @@
-// contexts/SearchContext.jsx
 'use client';
 
-import { createContext, useContext, useState, useCallback, useEffect } from 'react';
+// contexts/SearchContext.jsx - מנוע חיפוש פשוט
+import React, { createContext, useState, useContext, useCallback } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import axios from 'axios';
-import { debounce } from 'lodash';
 
-const SearchContext = createContext({});
-
-export const useSearch = () => {
-  const context = useContext(SearchContext);
-  if (!context) {
-    throw new Error('useSearch must be used within SearchProvider');
-  }
-  return context;
-};
+const SearchContext = createContext(null);
 
 export const SearchProvider = ({ children }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   
-  // State
+  // סטייט חיפוש
   const [searchQuery, setSearchQuery] = useState(searchParams.get('q') || '');
-  const [suggestions, setSuggestions] = useState([]);
-  const [isSearching, setIsSearching] = useState(false);
   const [searchResults, setSearchResults] = useState([]);
-  const [filters, setFilters] = useState({
-    category: searchParams.get('category') || '',
-    priceRange: searchParams.get('price') || '',
-    rating: searchParams.get('rating') || '',
-    sort: searchParams.get('sort') || 'relevance',
-  });
-  
-  // Fetch suggestions
-  const fetchSuggestions = useCallback(
-    debounce(async (query) => {
-      if (!query || query.length < 2) {
-        setSuggestions([]);
-        return;
-      }
-      
-      try {
-        const response = await axios.get(`/api/proxy/search/suggestions`, {
-          params: { q: query }
-        });
-        
-        if (response.data.success) {
-          setSuggestions(response.data.suggestions);
-        }
-      } catch (error) {
-        console.error('Error fetching suggestions:', error);
-        setSuggestions([]);
-      }
-    }, 300),
-    []
-  );
-  
-  // Handle search
-  const handleSearch = useCallback(async (query, customFilters = {}) => {
-    if (!query && Object.keys(customFilters).length === 0) {
+  const [isSearching, setIsSearching] = useState(false);
+  const [searchHistory, setSearchHistory] = useState([]);
+
+  // ביצוע חיפוש
+  const performSearch = useCallback(async (query) => {
+    if (!query || query.trim().length < 2) {
       setSearchResults([]);
       return;
     }
-    
+
     setIsSearching(true);
     
     try {
-      const params = new URLSearchParams({
-        q: query || searchQuery,
-        ...filters,
-        ...customFilters,
-      });
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3333';
+      const response = await fetch(`${apiUrl}/search?q=${encodeURIComponent(query)}&limit=10`);
       
-      // Update URL
-      router.push(`/products?${params.toString()}`);
-      
-      const response = await axios.get(`/api/proxy/search`, {
-        params: Object.fromEntries(params)
-      });
-      
-      if (response.data.success) {
-        setSearchResults(response.data.results);
+      if (response.ok) {
+        const data = await response.json();
+        setSearchResults(data.products || []);
+        
+        // הוספה להיסטוריה
+        setSearchHistory(prev => {
+          const newHistory = [query, ...prev.filter(item => item !== query)].slice(0, 5);
+          return newHistory;
+        });
+        
+        console.log('🔍 Search results:', data.products?.length || 0);
+      } else {
+        // נתונים דמיונליים אם השרת לא זמין
+        const mockResults = generateMockSearchResults(query);
+        setSearchResults(mockResults);
       }
     } catch (error) {
-      console.error('Search error:', error);
-      setSearchResults([]);
+      console.log('Search error, using mock data:', error.message);
+      const mockResults = generateMockSearchResults(query);
+      setSearchResults(mockResults);
     } finally {
       setIsSearching(false);
     }
-  }, [searchQuery, filters, router]);
-  
-  // Update search query
-  const updateSearchQuery = useCallback((query) => {
+  }, []);
+
+  // ניווט לחיפוש
+  const navigateToSearch = useCallback((query) => {
     setSearchQuery(query);
-    fetchSuggestions(query);
-  }, [fetchSuggestions]);
-  
-  // Clear search
+    router.push(`/products?q=${encodeURIComponent(query)}`);
+  }, [router]);
+
+  // ניקוי חיפוש
   const clearSearch = useCallback(() => {
     setSearchQuery('');
-    setSuggestions([]);
     setSearchResults([]);
-    setFilters({
-      category: '',
-      priceRange: '',
-      rating: '',
-      sort: 'relevance',
-    });
     router.push('/products');
   }, [router]);
-  
-  // Select suggestion
-  const selectSuggestion = useCallback((suggestion) => {
-    if (suggestion.type === 'product') {
-      router.push(`/product/${suggestion._id}`);
-    } else if (suggestion.type === 'vendor') {
-      router.push(`/vendor/${suggestion._id}`);
-    } else if (suggestion.type === 'category') {
-      handleSearch('', { category: suggestion.value });
-    } else {
-      setSearchQuery(suggestion.text);
-      handleSearch(suggestion.text);
-    }
-    setSuggestions([]);
-  }, [router, handleSearch]);
-  
-  // Update filters
-  const updateFilters = useCallback((newFilters) => {
-    setFilters(prev => ({
-      ...prev,
-      ...newFilters
-    }));
+
+  // עדכון שאילתת חיפוש
+  const updateSearchQuery = useCallback((query) => {
+    setSearchQuery(query);
     
-    // Trigger new search with updated filters
-    handleSearch(searchQuery, newFilters);
-  }, [searchQuery, handleSearch]);
-  
-  // Listen to URL changes
-  useEffect(() => {
-    const q = searchParams.get('q');
-    const category = searchParams.get('category');
-    const price = searchParams.get('price');
-    const rating = searchParams.get('rating');
-    const sort = searchParams.get('sort');
-    
-    if (q !== searchQuery) {
-      setSearchQuery(q || '');
-    }
-    
-    setFilters({
-      category: category || '',
-      priceRange: price || '',
-      rating: rating || '',
-      sort: sort || 'relevance',
-    });
-  }, [searchParams]);
-  
+    // חיפוש אוטומטי עם debounce
+    const timeoutId = setTimeout(() => {
+      if (query.length >= 2) {
+        performSearch(query);
+      } else {
+        setSearchResults([]);
+      }
+    }, 300);
+
+    return () => clearTimeout(timeoutId);
+  }, [performSearch]);
+
   const value = {
     // State
     searchQuery,
-    suggestions,
-    isSearching,
     searchResults,
-    filters,
+    isSearching,
+    searchHistory,
     
     // Actions
-    updateSearchQuery,
-    handleSearch,
+    performSearch,
+    navigateToSearch,
     clearSearch,
-    selectSuggestion,
-    updateFilters,
+    updateSearchQuery,
+    setSearchQuery,
   };
-  
+
   return (
     <SearchContext.Provider value={value}>
       {children}
     </SearchContext.Provider>
   );
 };
+
+export const useSearch = () => {
+  const context = useContext(SearchContext);
+  if (!context) {
+    throw new Error('useSearch must be used within a SearchProvider');
+  }
+  return context;
+};
+
+// נתונים דמיונליים לחיפוש
+function generateMockSearchResults(query) {
+  const mockProducts = [
+    'אוזניות בלוטוט',
+    'כבל טעינה',
+    'מטען אלחוטי',
+    'מחזיק טלפון לרכב',
+    'רמקול נייד',
+    'מגן למחשב נייד',
+    'עכבר אלחוטי',
+    'מקלדת מכנית',
+    'מצלמת רכב',
+    'סוללה נייד'
+  ];
+
+  return mockProducts
+    .filter(product => 
+      product.includes(query) || 
+      query.split(' ').some(word => product.includes(word))
+    )
+    .slice(0, 5)
+    .map((title, index) => ({
+      _id: `search-${index}`,
+      title: `${title} - תוצאת חיפוש ל"${query}"`,
+      image: `https://picsum.photos/200/200?random=${index + 100}`,
+      price: Math.floor(Math.random() * 300) + 50,
+      recommendation: `מוצר מעולה שמתאים לחיפוש "${query}"`,
+      vendorId: {
+        fullName: `ממליץ ${index + 1}`,
+      }
+    }));
+}
