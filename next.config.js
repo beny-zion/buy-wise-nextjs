@@ -1,21 +1,33 @@
 ﻿/** @type {import('next').NextConfig} */
 const nextConfig = {
-  images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: '**',
-      },
-      {
-        protocol: 'http',
-        hostname: '**',
-      }
-    ],
-  },
-  experimental: {
-    optimizeCss: true,
-    scrollRestoration: true,
-  },
-}
+  reactStrictMode: true,
+  
+  images: {
+    domains: [
+      'localhost',
+      'ae01.alicdn.com', 
+      'ae04.alicdn.com',
+      'ae03.alicdn.com',
+      'ae02.alicdn.com',
+      'i.alicdn.com',
+      'img.alicdn.com'
+    ],
+  },
+  
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/products',
+        permanent: false,
+      },
+    ];
+  },
+  
+  experimental: {
+    optimizeCss: true,
+    scrollRestoration: true,
+  },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;
