@@ -1,176 +1,197 @@
+// components/navigation/ProfileCircle.jsx
 'use client';
 
-// components/navigation/ProfileCircle.jsx - מתוקן לNext.js
-import React, { useState } from 'react';
-import { useRouter } from 'next/navigation'; // תיקון: next/navigation
-import { useAuth } from '@/contexts/AuthContext';
-import { User, LogIn, UserCircle, Settings, LogOut } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import { User, LogOut, Heart, Package, HelpCircle, Plus } from 'lucide-react';
 
 const ProfileCircle = ({ isNavbar = false }) => {
-  const { user, logout, mockLogin } = useAuth();
+  const [isOpen, setIsOpen] = useState(false);
+  const [user, setUser] = useState(null);
   const router = useRouter();
-  const [showDropdown, setShowDropdown] = useState(false);
-  const [showTooltip, setShowTooltip] = useState(false);
 
-  const handleClick = () => {
-    if (user) {
-      if (isNavbar) {
-        setShowDropdown(!showDropdown);
-      } else {
-        router.push('/profile');
+  useEffect(() => {
+    // Check if user is logged in
+    const checkAuth = async () => {
+      try {
+        const response = await fetch('/api/auth/status', {
+          credentials: 'include'
+        });
+        if (response.ok) {
+          const data = await response.json();
+          setUser(data.user);
+        }
+      } catch (error) {
+        console.error('Auth check failed:', error);
       }
-    } else {
-      router.push('/login');
+    };
+    
+    checkAuth();
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      await fetch('/api/auth/logout', {
+        method: 'POST',
+        credentials: 'include'
+      });
+      setUser(null);
+      router.push('/');
+      setIsOpen(false);
+    } catch (error) {
+      console.error('Logout failed:', error);
     }
   };
 
-  const handleProfileClick = () => {
-    setShowDropdown(false);
-    router.push('/profile');
+  const menuItems = [
+    {
+      icon: <Heart className="w-4 h-4" />,
+      label: 'המועדפים שלי',
+      path: '/favorites',
+      requireAuth: true
+    },
+    {
+      icon: <Package className="w-4 h-4" />,
+      label: 'המוצרים שלי',
+      path: '/vendor/products',
+      requireAuth: true,
+      vendorOnly: true
+    },
+    {
+      icon: <Plus className="w-4 h-4" />,
+      label: 'הוסף מוצר',
+      path: '/vendor/add-product',
+      requireAuth: true,
+      vendorOnly: true
+    },
+    {
+      icon: <HelpCircle className="w-4 h-4" />,
+      label: 'שאלות',
+      path: '/vendor/questions',
+      requireAuth: true,
+      vendorOnly: true
+    }
+  ];
+
+  const handleMenuClick = (path) => {
+    if (!user && path !== '/') {
+      router.push('/login');
+    } else {
+      router.push(path);
+    }
+    setIsOpen(false);
   };
 
-  const handleLogout = () => {
-    setShowDropdown(false);
-    logout();
-  };
-
-  const handleMockLogin = () => {
-    mockLogin(); // לבדיקות
-    setShowDropdown(false);
-  };
-
-  // תצוגה בניווט העליון
   if (isNavbar) {
+    // Compact version for navbar
     return (
-      <div className="relative">
-        <button
-          onClick={handleClick}
-          onMouseEnter={() => setShowTooltip(true)}
-          onMouseLeave={() => setShowTooltip(false)}
-          className="w-full h-full rounded-full flex items-center justify-center overflow-hidden
-                     hover:scale-105 transition-transform duration-200 relative"
-        >
-          {user?.profileImage ? (
-            <Image 
-              src={user.profileImage} 
-              alt="פרופיל"
-              width={40}
-              height={40}
-              className="w-full h-full object-cover" 
-            />
-          ) : (
-            <User className="w-5 h-5 text-gray-600" />
-          )}
-        </button>
-        
-        {/* Tooltip */}
-        {showTooltip && !showDropdown && (
-          <div className="absolute top-full right-0 mt-2 bg-gray-900 text-white text-xs py-1 px-2 rounded whitespace-nowrap z-50">
-            {user ? user.fullName || 'אזור אישי' : 'התחברות'}
-          </div>
-        )}
-
-        {/* Dropdown Menu */}
-        {showDropdown && (
-          <div className="absolute top-full right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg py-2 w-48 z-50">
-            {user ? (
-              <>
-                <div className="px-4 py-2 border-b border-gray-100">
-                  <div className="font-medium text-gray-900">{user.fullName}</div>
-                  <div className="text-sm text-gray-500">{user.email}</div>
-                </div>
-                
-                <button
-                  onClick={handleProfileClick}
-                  className="w-full text-right px-4 py-2 hover:bg-gray-50 flex items-center gap-3"
-                >
-                  <UserCircle size={16} />
-                  <span>פרופיל אישי</span>
-                </button>
-                
-                <button
-                  onClick={handleProfileClick}
-                  className="w-full text-right px-4 py-2 hover:bg-gray-50 flex items-center gap-3"
-                >
-                  <Settings size={16} />
-                  <span>הגדרות</span>
-                </button>
-                
-                <hr className="my-1" />
-                
-                <button
-                  onClick={handleLogout}
-                  className="w-full text-right px-4 py-2 hover:bg-gray-50 flex items-center gap-3 text-red-600"
-                >
-                  <LogOut size={16} />
-                  <span>התנתקות</span>
-                </button>
-              </>
-            ) : (
-              <>
-                <button
-                  onClick={() => router.push('/login')}
-                  className="w-full text-right px-4 py-2 hover:bg-gray-50 flex items-center gap-3"
-                >
-                  <LogIn size={16} />
-                  <span>התחברות</span>
-                </button>
-                
-                <hr className="my-1" />
-                
-                <button
-                  onClick={handleMockLogin}
-                  className="w-full text-right px-4 py-2 hover:bg-gray-50 flex items-center gap-3 text-blue-600"
-                >
-                  <User size={16} />
-                  <span>התחברות לדוגמה</span>
-                </button>
-              </>
-            )}
-          </div>
-        )}
-
-        {/* מסכה לסגירת ה-dropdown */}
-        {showDropdown && (
-          <div
-            className="fixed inset-0 z-40"
-            onClick={() => setShowDropdown(false)}
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="relative"
+      >
+        {user?.profileImage ? (
+          <Image
+            src={user.profileImage}
+            alt={user.fullName || 'Profile'}
+            width={32}
+            height={32}
+            className="rounded-full object-cover"
           />
+        ) : (
+          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#FFA066] to-[#FF6B6B] flex items-center justify-center">
+            <User className="w-4 h-4 text-white" />
+          </div>
         )}
-      </div>
+        
+        {/* Dropdown Menu */}
+        {isOpen && (
+          <>
+            {/* Backdrop */}
+            <div 
+              className="fixed inset-0 z-40" 
+              onClick={() => setIsOpen(false)}
+            />
+            
+            {/* Menu */}
+            <div className="absolute top-12 right-0 bg-white rounded-xl shadow-xl border border-gray-100 
+                          min-w-[200px] py-2 z-50 animate-fadeIn">
+              {user ? (
+                <>
+                  {/* User Info */}
+                  <div className="px-4 py-3 border-b border-gray-100">
+                    <p className="text-sm font-medium text-gray-900">{user.fullName}</p>
+                    <p className="text-xs text-gray-500">{user.email}</p>
+                  </div>
+                  
+                  {/* Menu Items */}
+                  {menuItems
+                    .filter(item => !item.vendorOnly || user.role === 'vendor')
+                    .map((item, index) => (
+                      <button
+                        key={index}
+                        onClick={() => handleMenuClick(item.path)}
+                        className="w-full px-4 py-2.5 flex items-center gap-3 hover:bg-gray-50 
+                                 transition-colors text-right"
+                        dir="rtl"
+                      >
+                        <span className="text-gray-600">{item.icon}</span>
+                        <span className="text-sm text-gray-700">{item.label}</span>
+                      </button>
+                    ))}
+                  
+                  {/* Logout */}
+                  <div className="border-t border-gray-100 mt-2 pt-2">
+                    <button
+                      onClick={handleLogout}
+                      className="w-full px-4 py-2.5 flex items-center gap-3 hover:bg-red-50 
+                               transition-colors text-right text-red-600"
+                      dir="rtl"
+                    >
+                      <LogOut className="w-4 h-4" />
+                      <span className="text-sm">התנתק</span>
+                    </button>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <button
+                    onClick={() => router.push('/login')}
+                    className="w-full px-4 py-3 text-center text-sm font-medium text-white 
+                             bg-gradient-to-r from-[#FFA066] to-[#FF6B6B] hover:shadow-md 
+                             transition-all"
+                  >
+                    התחבר / הירשם
+                  </button>
+                </>
+              )}
+            </div>
+          </>
+        )}
+      </button>
     );
   }
 
-  // תצוגה בפינה התחתונה (המקורית)
+  // Full version for floating button (if needed)
   return (
-    <div className="fixed bottom-6 left-6 z-50">
+    <div className="fixed bottom-4 left-4 z-50">
       <button
-        onMouseEnter={() => setShowTooltip(true)}
-        onMouseLeave={() => setShowTooltip(false)}
-        onClick={handleClick}
-        className="relative w-12 h-12 rounded-full bg-white shadow-lg flex items-center justify-center overflow-hidden
-                   border border-gray-200 hover:border-orange-500 transition-colors"
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-14 h-14 rounded-full bg-gradient-to-br from-[#FFA066] to-[#FF6B6B] 
+                   shadow-lg hover:shadow-xl transition-all flex items-center justify-center"
       >
         {user?.profileImage ? (
-          <Image 
-            src={user.profileImage} 
-            alt="פרופיל"
+          <Image
+            src={user.profileImage}
+            alt={user.fullName || 'Profile'}
             width={48}
             height={48}
-            className="w-full h-full object-cover" 
+            className="rounded-full object-cover"
           />
         ) : (
-          <User className="w-6 h-6 text-gray-600" />
+          <User className="w-6 h-6 text-white" />
         )}
       </button>
-      
-      {showTooltip && (
-        <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 
-                      bg-gray-900 text-white text-sm py-1 px-2 rounded whitespace-nowrap">
-          {user ? user.fullName || 'אזור אישי' : 'התחברות'}
-        </div>
-      )}
     </div>
   );
 };

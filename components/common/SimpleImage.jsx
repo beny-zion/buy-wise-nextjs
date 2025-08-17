@@ -1,3 +1,5 @@
+﻿'use client';
+
 /* needed */
 // src/components/common/SimpleImage.jsx
 import React, { useState } from 'react';
@@ -9,11 +11,11 @@ const SimpleImage = ({ src, alt, className, ...props }) => {
     setHasError(true);
   };
 
-  // אם יש שגיאה או אין src, הצג מקום ריק
+  // ׳׳ ׳™׳© ׳©׳’׳™׳׳” ׳׳• ׳׳™׳ src, ׳”׳¦׳’ ׳׳§׳•׳ ׳¨׳™׳§
   if (hasError || !src) {
     return (
       <div className={`${className} bg-gray-100 flex items-center justify-center`}>
-        <div className="text-gray-400 text-sm">אין תמונה</div>
+        <div className="text-gray-400 text-sm">׳׳™׳ ׳×׳׳•׳ ׳”</div>
       </div>
     );
   }

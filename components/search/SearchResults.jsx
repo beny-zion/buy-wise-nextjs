@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 // /* needed */
 // // components/search/SearchResults.jsx - FIXED VERSION (With vendor card for both search and direct link)
@@ -8,7 +8,7 @@
 // import { useSearch } from '../../contexts/SearchContext';
 // import { useProductViewer } from '../../contexts/ProductViewerContext';
 
-// // 🆕 קומפוננטת כרטיס ביקור מוכר
+// // נ†• ׳§׳•׳׳₪׳•׳ ׳ ׳˜׳× ׳›׳¨׳˜׳™׳¡ ׳‘׳™׳§׳•׳¨ ׳׳•׳›׳¨
 // const VendorCard = ({ vendor, onClose }) => {
 //   const vendorUrl = `${window.location.origin}/vendor/${vendor._id}`;
   
@@ -31,7 +31,7 @@
 //                  backdrop-blur-md rounded-2xl shadow-xl border border-white/20 p-6"
 //     >
 //       <div className="flex items-start gap-6">
-//         {/* תמונת פרופיל */}
+//         {/* ׳×׳׳•׳ ׳× ׳₪׳¨׳•׳₪׳™׳ */}
 //         <motion.div
 //           initial={{ scale: 0 }}
 //           animate={{ scale: 1 }}
@@ -49,7 +49,7 @@
 //           </div>
 //         </motion.div>
         
-//         {/* מידע המוכר */}
+//         {/* ׳׳™׳“׳¢ ׳”׳׳•׳›׳¨ */}
 //         <div className="flex-1">
 //           <div className="flex items-center justify-between mb-3">
 //             <motion.h3
@@ -69,7 +69,7 @@
 //             </button>
 //           </div>
           
-//           {/* סטטיסטיקות */}
+//           {/* ׳¡׳˜׳˜׳™׳¡׳˜׳™׳§׳•׳× */}
 //           <motion.div
 //             initial={{ opacity: 0, y: 10 }}
 //             animate={{ opacity: 1, y: 0 }}
@@ -79,7 +79,7 @@
 //             <div className="flex items-center gap-2 bg-white/60 px-4 py-2 rounded-xl">
 //               <ShoppingBag className="w-4 h-4 text-blue-600" />
 //               <span className="text-sm font-semibold text-gray-700">
-//                 {vendor.productCount || 0} מוצרים
+//                 {vendor.productCount || 0} ׳׳•׳¦׳¨׳™׳
 //               </span>
 //             </div>
             
@@ -93,7 +93,7 @@
 //             )}
 //           </motion.div>
           
-//           {/* תיאור */}
+//           {/* ׳×׳™׳׳•׳¨ */}
 //           {vendor.bio && (
 //             <motion.p
 //               initial={{ opacity: 0, y: 10 }}
@@ -105,7 +105,7 @@
 //             </motion.p>
 //           )}
           
-//           {/* כפתורי פעולה */}
+//           {/* ׳›׳₪׳×׳•׳¨׳™ ׳₪׳¢׳•׳׳” */}
 //           <motion.div
 //             initial={{ opacity: 0, y: 10 }}
 //             animate={{ opacity: 1, y: 0 }}
@@ -119,7 +119,7 @@
 //                        hover:scale-105 font-semibold"
 //             >
 //               <ExternalLink className="w-4 h-4" />
-//               העתק קישור
+//               ׳”׳¢׳×׳§ ׳§׳™׳©׳•׳¨
 //             </button>
 //           </motion.div>
 //         </div>
@@ -128,36 +128,36 @@
 //   );
 // };
 
-// // קומפוננטת תוצאות חיפוש עדכנית
+// // ׳§׳•׳׳₪׳•׳ ׳ ׳˜׳× ׳×׳•׳¦׳׳•׳× ׳—׳™׳₪׳•׳© ׳¢׳“׳›׳ ׳™׳×
 // const SearchResults = () => {
 //   const { 
 //     searchQuery, 
-//     selectedVendor, // מחיפוש
+//     selectedVendor, // ׳׳—׳™׳₪׳•׳©
 //     clearSearch,
 //     filters
 //   } = useSearch();
   
 //   const { 
 //     products, 
-//     currentVendorInfo, // מנתיב ישיר
+//     currentVendorInfo, // ׳׳ ׳×׳™׳‘ ׳™׳©׳™׳¨
 //     vendorFilterMode 
 //   } = useProductViewer();
   
-//   // 🔧 בדיקה אם יש מוכר פעיל (מחיפוש או מנתיב ישיר)
+//   // נ”§ ׳‘׳“׳™׳§׳” ׳׳ ׳™׳© ׳׳•׳›׳¨ ׳₪׳¢׳™׳ (׳׳—׳™׳₪׳•׳© ׳׳• ׳׳ ׳×׳™׳‘ ׳™׳©׳™׳¨)
 //   const activeVendor = selectedVendor || currentVendorInfo;
   
-//   // בדיקה אם יש חיפוש פעיל
+//   // ׳‘׳“׳™׳§׳” ׳׳ ׳™׳© ׳—׳™׳₪׳•׳© ׳₪׳¢׳™׳
 //   const hasActiveSearch = searchQuery || 
 //     filters.categories.length > 0 || 
 //     filters.vendors.length > 0 ||
 //     filters.priceRange.min !== null ||
 //     filters.priceRange.max !== null ||
 //     filters.minRating !== null ||
-//     vendorFilterMode; // 🔧 גם אם יש מוכר פעיל
+//     vendorFilterMode; // נ”§ ׳’׳ ׳׳ ׳™׳© ׳׳•׳›׳¨ ׳₪׳¢׳™׳
   
 //   if (!hasActiveSearch) return null;
   
-//   // יצירת טקסט תיאור החיפוש
+//   // ׳™׳¦׳™׳¨׳× ׳˜׳§׳¡׳˜ ׳×׳™׳׳•׳¨ ׳”׳—׳™׳₪׳•׳©
 //   const getSearchDescription = () => {
 //     const parts = [];
     
@@ -166,21 +166,21 @@
 //     }
     
 //     if (filters.categories.length > 0) {
-//       parts.push(`${filters.categories.length} קטגוריות`);
+//       parts.push(`${filters.categories.length} ׳§׳˜׳’׳•׳¨׳™׳•׳×`);
 //     }
     
 //     if (filters.vendors.length > 0) {
-//       parts.push(`${filters.vendors.length} מוכרים`);
+//       parts.push(`${filters.vendors.length} ׳׳•׳›׳¨׳™׳`);
 //     }
     
 //     if (filters.priceRange.min !== null || filters.priceRange.max !== null) {
 //       const min = filters.priceRange.min || 0;
-//       const max = filters.priceRange.max || '∞';
-//       parts.push(`₪${min}-${max}`);
+//       const max = filters.priceRange.max || 'גˆ';
+//       parts.push(`ג‚×${min}-${max}`);
 //     }
     
 //     if (filters.minRating) {
-//       parts.push(`דירוג ${filters.minRating}+`);
+//       parts.push(`׳“׳™׳¨׳•׳’ ${filters.minRating}+`);
 //     }
     
 //     return parts.join(', ');
@@ -196,14 +196,14 @@
 //           className="fixed top-16 left-0 right-0 z-30 px-4"
 //         >
 //           <div className="max-w-4xl mx-auto">
-//             {/* 🔧 אם יש מוכר פעיל - הצג כרטיס ביקור */}
+//             {/* נ”§ ׳׳ ׳™׳© ׳׳•׳›׳¨ ׳₪׳¢׳™׳ - ׳”׳¦׳’ ׳›׳¨׳˜׳™׳¡ ׳‘׳™׳§׳•׳¨ */}
 //             {activeVendor ? (
 //               <VendorCard 
 //                 vendor={activeVendor} 
 //                 onClose={clearSearch} 
 //               />
 //             ) : (
-//               /* תוצאות חיפוש רגילות */
+//               /* ׳×׳•׳¦׳׳•׳× ׳—׳™׳₪׳•׳© ׳¨׳’׳™׳׳•׳× */
 //               <div className="bg-white rounded-xl shadow-md p-3 flex items-center justify-between">
 //                 <div className="flex items-center gap-3 flex-1">
 //                   <div className="p-2 bg-[#FFA066]/10 rounded-lg">
@@ -212,10 +212,10 @@
                   
 //                   <div className="flex-1">
 //                     <div className="text-sm font-medium text-gray-900">
-//                       תוצאות חיפוש
+//                       ׳×׳•׳¦׳׳•׳× ׳—׳™׳₪׳•׳©
 //                     </div>
 //                     <div className="text-xs text-gray-500 mt-0.5">
-//                       {getSearchDescription()} - {products.length} מוצרים
+//                       {getSearchDescription()} - {products.length} ׳׳•׳¦׳¨׳™׳
 //                     </div>
 //                   </div>
 //                 </div>
@@ -236,17 +236,17 @@
 // };
 
 // export default SearchResults;
-// components/search/SearchResults.jsx - מושבת - משתמשים ב-VendorInfoCard במקום
+// components/search/SearchResults.jsx - ׳׳•׳©׳‘׳× - ׳׳©׳×׳׳©׳™׳ ׳‘-VendorInfoCard ׳‘׳׳§׳•׳
 import React from 'react';
 
 /**
- * 🚫 SearchResults מושבת - משתמשים ב-VendorInfoCard במקום
+ * נ« SearchResults ׳׳•׳©׳‘׳× - ׳׳©׳×׳׳©׳™׳ ׳‘-VendorInfoCard ׳‘׳׳§׳•׳
  * 
- * הקומפוננטה הזו הושבתה כי אנחנו משתמשים ב-VendorInfoCard
- * שמספק חוויה טובה יותר עם כפתור שיתוף ועיצוב משופר.
+ * ׳”׳§׳•׳׳₪׳•׳ ׳ ׳˜׳” ׳”׳–׳• ׳”׳•׳©׳‘׳×׳” ׳›׳™ ׳׳ ׳—׳ ׳• ׳׳©׳×׳׳©׳™׳ ׳‘-VendorInfoCard
+ * ׳©׳׳¡׳₪׳§ ׳—׳•׳•׳™׳” ׳˜׳•׳‘׳” ׳™׳•׳×׳¨ ׳¢׳ ׳›׳₪׳×׳•׳¨ ׳©׳™׳×׳•׳£ ׳•׳¢׳™׳¦׳•׳‘ ׳׳©׳•׳₪׳¨.
  */
 const SearchResults = () => {
-  // פשוט מחזיר null - הקומפוננטה לא תופיע
+  // ׳₪׳©׳•׳˜ ׳׳—׳–׳™׳¨ null - ׳”׳§׳•׳׳₪׳•׳ ׳ ׳˜׳” ׳׳ ׳×׳•׳₪׳™׳¢
   return null;
 };
 

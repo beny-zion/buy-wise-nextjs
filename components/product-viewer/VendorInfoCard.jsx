@@ -1,9 +1,11 @@
-// src/components/product-viewer/VendorInfoCard.jsx - 📱 רספונסיבי מלא עם Tailwind בלבד
+﻿'use client';
+
+// src/components/product-viewer/VendorInfoCard.jsx - נ“± ׳¨׳¡׳₪׳•׳ ׳¡׳™׳‘׳™ ׳׳׳ ׳¢׳ Tailwind ׳‘׳׳‘׳“
 import React, { useCallback } from 'react';
 import { Share2, ExternalLink, Star, Package, CheckCircle } from 'lucide-react';
 
 /**
- * 🏪 VendorInfoCard - כרטיס ביקור מוכר רספונסיבי מלא עם Tailwind בלבד
+ * נ× VendorInfoCard - ׳›׳¨׳˜׳™׳¡ ׳‘׳™׳§׳•׳¨ ׳׳•׳›׳¨ ׳¨׳¡׳₪׳•׳ ׳¡׳™׳‘׳™ ׳׳׳ ׳¢׳ Tailwind ׳‘׳׳‘׳“
  * 
  * Breakpoints:
  * - Mobile: < 640px (sm)
@@ -11,35 +13,35 @@ import { Share2, ExternalLink, Star, Package, CheckCircle } from 'lucide-react';
  * - Desktop: > 1024px (lg+)
  */
 const VendorInfoCard = React.memo(({ vendor, className = '' }) => {
-  // פונקציית שיתוף מוכר
+  // ׳₪׳•׳ ׳§׳¦׳™׳™׳× ׳©׳™׳×׳•׳£ ׳׳•׳›׳¨
   const handleVendorShare = useCallback(async () => {
     const vendorUrl = `${window.location.origin}/vendor/${vendor._id}`;
     const shareData = {
-      title: `${vendor.fullName} - המלצות מוצרים איכותיות`,
-      text: vendor.bio || 'מציע המלצות איכותיות למוצרים מובחרים',
+      title: `${vendor.fullName} - ׳”׳׳׳¦׳•׳× ׳׳•׳¦׳¨׳™׳ ׳׳™׳›׳•׳×׳™׳•׳×`,
+      text: vendor.bio || '׳׳¦׳™׳¢ ׳”׳׳׳¦׳•׳× ׳׳™׳›׳•׳×׳™׳•׳× ׳׳׳•׳¦׳¨׳™׳ ׳׳•׳‘׳—׳¨׳™׳',
       url: vendorUrl,
     };
 
     try {
       if (navigator.share && navigator.canShare?.(shareData)) {
         await navigator.share(shareData);
-        console.log('🔗 שיתוף מוכר בוצע בהצלחה');
+        console.log('נ”— ׳©׳™׳×׳•׳£ ׳׳•׳›׳¨ ׳‘׳•׳¦׳¢ ׳‘׳”׳¦׳׳—׳”');
       } else {
         await navigator.clipboard.writeText(vendorUrl);
-        console.log('📋 קישור מוכר הועתק ללוח');
+        console.log('נ“‹ ׳§׳™׳©׳•׳¨ ׳׳•׳›׳¨ ׳”׳•׳¢׳×׳§ ׳׳׳•׳—');
       }
     } catch (error) {
-      console.error('❌ שגיאה בשיתוף מוכר:', error);
+      console.error('ג ׳©׳’׳™׳׳” ׳‘׳©׳™׳×׳•׳£ ׳׳•׳›׳¨:', error);
       try {
         await navigator.clipboard.writeText(vendorUrl);
-        console.log('📋 קישור מוכר הועתק ללוח (fallback)');
+        console.log('נ“‹ ׳§׳™׳©׳•׳¨ ׳׳•׳›׳¨ ׳”׳•׳¢׳×׳§ ׳׳׳•׳— (fallback)');
       } catch (clipboardError) {
-        console.error('❌ שגיאה בהעתקה ללוח:', clipboardError);
+        console.error('ג ׳©׳’׳™׳׳” ׳‘׳”׳¢׳×׳§׳” ׳׳׳•׳—:', clipboardError);
       }
     }
   }, [vendor._id, vendor.fullName, vendor.bio]);
 
-  // פונקציית פתיחת דף המוכר בחלונית חדשה
+  // ׳₪׳•׳ ׳§׳¦׳™׳™׳× ׳₪׳×׳™׳—׳× ׳“׳£ ׳”׳׳•׳›׳¨ ׳‘׳—׳׳•׳ ׳™׳× ׳—׳“׳©׳”
   const openVendorPage = useCallback(() => {
     const vendorUrl = `/vendor/${vendor._id}`;
     window.open(vendorUrl, '_blank');
@@ -55,10 +57,10 @@ const VendorInfoCard = React.memo(({ vendor, className = '' }) => {
                     p-3 sm:p-4 lg:p-6 
                     transition-all duration-300 hover:shadow-2xl ${className}`}>
       
-      {/* פריסה עיקרית - מובייל: עמודות, דסקטופ: שורות */}
+      {/* ׳₪׳¨׳™׳¡׳” ׳¢׳™׳§׳¨׳™׳× - ׳׳•׳‘׳™׳™׳: ׳¢׳׳•׳“׳•׳×, ׳“׳¡׳§׳˜׳•׳₪: ׳©׳•׳¨׳•׳× */}
       <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 lg:gap-6">
         
-        {/* תמונת פרופיל עם בדג */}
+        {/* ׳×׳׳•׳ ׳× ׳₪׳¨׳•׳₪׳™׳ ׳¢׳ ׳‘׳“׳’ */}
         <div className="relative flex-shrink-0 self-start sm:self-center">
           <img
             src={vendor.profileImage || '/default-avatar.png'}
@@ -68,7 +70,7 @@ const VendorInfoCard = React.memo(({ vendor, className = '' }) => {
                      ring-2 sm:ring-3 lg:ring-4 ring-white shadow-lg
                      transition-transform duration-300 hover:scale-105"
           />
-          {/* בדג מוכר מאומת */}
+          {/* ׳‘׳“׳’ ׳׳•׳›׳¨ ׳׳׳•׳׳× */}
           <div className="absolute -bottom-1 -right-1 
                          w-5 h-5 lg:w-6 lg:h-6 
                          bg-green-500 rounded-full 
@@ -78,10 +80,10 @@ const VendorInfoCard = React.memo(({ vendor, className = '' }) => {
           </div>
         </div>
 
-        {/* תוכן ראשי */}
+        {/* ׳×׳•׳›׳ ׳¨׳׳©׳™ */}
         <div className="flex-1 min-w-0">
           
-          {/* כותרת וכפתורים */}
+          {/* ׳›׳•׳×׳¨׳× ׳•׳›׳₪׳×׳•׳¨׳™׳ */}
           <div className="flex items-start justify-between gap-3 mb-2 sm:mb-1">
             <div className="min-w-0 flex-1">
               <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-800 
@@ -90,7 +92,7 @@ const VendorInfoCard = React.memo(({ vendor, className = '' }) => {
               </h2>
             </div>
             
-            {/* כפתורי פעולה - תמיד בצד */}
+            {/* ׳›׳₪׳×׳•׳¨׳™ ׳₪׳¢׳•׳׳” - ׳×׳׳™׳“ ׳‘׳¦׳“ */}
             <div className="flex gap-1.5 sm:gap-2 flex-shrink-0">
               <button
                 onClick={handleVendorShare}
@@ -102,8 +104,8 @@ const VendorInfoCard = React.memo(({ vendor, className = '' }) => {
                          hover:scale-105 active:scale-95
                          group border border-white/20
                          min-w-[44px] min-h-[44px] flex items-center justify-center"
-                title="שתף מוכר"
-                aria-label="שתף מוכר"
+                title="׳©׳×׳£ ׳׳•׳›׳¨"
+                aria-label="׳©׳×׳£ ׳׳•׳›׳¨"
               >
                 <Share2 className="w-4 h-4 sm:w-5 sm:h-5 
                                 text-[#FFA066] group-hover:text-[#FF6B6B] 
@@ -120,8 +122,8 @@ const VendorInfoCard = React.memo(({ vendor, className = '' }) => {
                          hover:scale-105 active:scale-95
                          group border border-white/20
                          min-w-[44px] min-h-[44px] flex items-center justify-center"
-                title="פתח דף מוכר בחלונית חדשה"
-                aria-label="פתח דף מוכר"
+                title="׳₪׳×׳— ׳“׳£ ׳׳•׳›׳¨ ׳‘׳—׳׳•׳ ׳™׳× ׳—׳“׳©׳”"
+                aria-label="׳₪׳×׳— ׳“׳£ ׳׳•׳›׳¨"
               >
                 <ExternalLink className="w-4 h-4 sm:w-5 sm:h-5 
                                       text-[#5C9EFF] group-hover:text-[#4A90E2] 
@@ -130,7 +132,7 @@ const VendorInfoCard = React.memo(({ vendor, className = '' }) => {
             </div>
           </div>
 
-          {/* תיאור מוכר */}
+          {/* ׳×׳™׳׳•׳¨ ׳׳•׳›׳¨ */}
           {vendor.bio && (
             <p className="text-sm sm:text-base text-gray-600 
                          mb-3 sm:mb-4 leading-relaxed
@@ -139,7 +141,7 @@ const VendorInfoCard = React.memo(({ vendor, className = '' }) => {
             </p>
           )}
           
-          {/* סטטיסטיקות */}
+          {/* ׳¡׳˜׳˜׳™׳¡׳˜׳™׳§׳•׳× */}
           <div className="flex items-center gap-2 sm:gap-3 lg:gap-4 flex-wrap">
             <span className="flex items-center gap-1.5 
                            text-xs sm:text-sm 
@@ -148,7 +150,7 @@ const VendorInfoCard = React.memo(({ vendor, className = '' }) => {
                            rounded-full transition-colors duration-200">
               <Package className="w-3 h-3 sm:w-4 sm:h-4 text-[#FFA066]" />
               <span className="font-medium whitespace-nowrap">
-                {vendor.productCount || 0} מוצרים
+                {vendor.productCount || 0} ׳׳•׳¦׳¨׳™׳
               </span>
             </span>
             
@@ -165,12 +167,12 @@ const VendorInfoCard = React.memo(({ vendor, className = '' }) => {
               </span>
             )}
 
-            {/* תאריך הצטרפות - רק בטאבלט ומעלה */}
+            {/* ׳×׳׳¨׳™׳ ׳”׳¦׳˜׳¨׳₪׳•׳× - ׳¨׳§ ׳‘׳˜׳׳‘׳׳˜ ׳•׳׳¢׳׳” */}
             {vendor.createdAt && (
               <span className="hidden md:inline-flex 
                              text-xs text-gray-500 
                              bg-white/40 px-2 py-1 rounded-full">
-                מצטרף מאז {new Date(vendor.createdAt).toLocaleDateString('he-IL', { 
+                ׳׳¦׳˜׳¨׳£ ׳׳׳– {new Date(vendor.createdAt).toLocaleDateString('he-IL', { 
                   year: 'numeric', 
                   month: 'short' 
                 })}
@@ -180,14 +182,14 @@ const VendorInfoCard = React.memo(({ vendor, className = '' }) => {
         </div>
       </div>
 
-      {/* רשתות חברתיות - נפרד בבלוק */}
+      {/* ׳¨׳©׳×׳•׳× ׳—׳‘׳¨׳×׳™׳•׳× - ׳ ׳₪׳¨׳“ ׳‘׳‘׳׳•׳§ */}
       {vendor.social && Object.keys(vendor.social).length > 0 && (
         <div className="mt-3 sm:mt-4 pt-3 sm:pt-4 
                        border-t border-white/30">
           <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
             <span className="text-xs sm:text-sm text-gray-600 font-medium 
                            mb-1 sm:mb-0">
-              עקבו אחרי:
+              ׳¢׳§׳‘׳• ׳׳—׳¨׳™:
             </span>
             <div className="flex gap-1.5 sm:gap-2 flex-wrap">
               

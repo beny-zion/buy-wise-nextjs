@@ -1,37 +1,37 @@
+﻿// components/search/SearchPanel.jsx
 'use client';
 
-// components/search/SearchPanel.jsx - פאנל חיפוש
-import React, { useState, useRef, useEffect } from 'react';
-import { Search, X, Clock, TrendingUp } from 'lucide-react';
-import { useSearch } from '@/contexts/SearchContext';
+import { useState, useEffect, useCallback, useRef } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { Search, X, Filter } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import debounce from 'lodash/debounce';
 
 const SearchPanel = () => {
-  const {
-    searchQuery,
-    searchResults,
-    isSearching,
-    searchHistory,
-    updateSearchQuery,
-    navigateToSearch,
-    clearSearch,
-    setSearchQuery
-  } = useSearch();
-
-  const [isOpen, setIsOpen] = useState(false);
-  const [localQuery, setLocalQuery] = useState(searchQuery);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isSearching, setIsSearching] = useState(false);
+  const [suggestions, setSuggestions] = useState([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
+  
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const inputRef = useRef(null);
   const panelRef = useRef(null);
 
-  // סינכרון עם סטייט החיפוש
+  // Get initial search query from URL
   useEffect(() => {
-    setLocalQuery(searchQuery);
-  }, [searchQuery]);
+    const query = searchParams.get('q');
+    if (query) {
+      setSearchQuery(query);
+    }
+  }, [searchParams]);
 
-  // סגירה בלחיצה מחוץ לפאנל
+  // Close suggestions when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (panelRef.current && !panelRef.current.contains(event.target)) {
-        setIsOpen(false);
+        setShowSuggestions(false);
       }
     };
 
@@ -39,180 +39,210 @@ const SearchPanel = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  // Fetch suggestions from API
+  const fetchSuggestions = useCallback(
+    debounce(async (query) => {
+      if (!query || query.length < 2) {
+        setSuggestions([]);
+        return;
+      }
+
+      try {
+        const response = await fetch(`/api/search/suggestions?q=${encodeURIComponent(query)}`);
+        if (response.ok) {
+          const data = await response.json();
+          setSuggestions(data.suggestions || []);
+        }
+      } catch (error) {
+        console.error('Failed to fetch suggestions:', error);
+        setSuggestions([]);
+      }
+    }, 300),
+    []
+  );
+
+  // Handle input change
   const handleInputChange = (e) => {
     const value = e.target.value;
-    setLocalQuery(value);
-    setIsOpen(true);
+    setSearchQuery(value);
     
-    // עדכון מיידי של הקונטקסט
-    const cleanup = updateSearchQuery(value);
-    return cleanup;
-  };
-
-  const handleSearch = (query = localQuery) => {
-    if (query.trim()) {
-      navigateToSearch(query.trim());
-      setIsOpen(false);
-      inputRef.current?.blur();
+    if (value.trim()) {
+      setShowSuggestions(true);
+      fetchSuggestions(value);
+    } else {
+      setShowSuggestions(false);
+      setSuggestions([]);
     }
   };
 
-  const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
-      handleSearch();
-    } else if (e.key === 'Escape') {
-      setIsOpen(false);
-      inputRef.current?.blur();
+  // Handle search submission
+  const handleSearch = (query = searchQuery) => {
+    if (!query.trim()) return;
+    
+    setShowSuggestions(false);
+    setIsSearching(true);
+    
+    // Update URL with search query
+    const params = new URLSearchParams(searchParams);
+    params.set('q', query);
+    router.push(`/products?${params.toString()}`);
+    
+    setTimeout(() => setIsSearching(false), 500);
+  };
+
+  // Handle suggestion click
+  const handleSuggestionClick = (suggestion) => {
+    setSearchQuery(suggestion.text);
+    setShowSuggestions(false);
+    
+    if (suggestion.type === 'vendor') {
+      router.push(`/vendor/${suggestion.id}`);
+    } else if (suggestion.type === 'product') {
+      router.push(`/product/${suggestion.id}`);
+    } else {
+      handleSearch(suggestion.text);
     }
   };
 
+  // Clear search
   const handleClear = () => {
-    setLocalQuery('');
-    clearSearch();
-    setIsOpen(false);
+    setSearchQuery('');
+    setSuggestions([]);
+    setShowSuggestions(false);
     inputRef.current?.focus();
+    
+    // Remove search param from URL
+    const params = new URLSearchParams(searchParams);
+    params.delete('q');
+    const queryString = params.toString();
+    router.push(queryString ? `/products?${queryString}` : '/products');
   };
-
-  const handleHistoryClick = (query) => {
-    setLocalQuery(query);
-    handleSearch(query);
-  };
-
-  const handleResultClick = (product) => {
-    // ניווט לעמוד המוצר או חיפוש
-    navigateToSearch(product.title);
-    setIsOpen(false);
-  };
-
-  const showSuggestions = isOpen && (localQuery.length >= 2 || searchHistory.length > 0);
 
   return (
-    <div className="relative w-full max-w-md" ref={panelRef}>
-      {/* Input Box */}
-      <div className="relative">
-        <div className="relative flex items-center">
-          <Search 
-            size={20} 
-            className="absolute right-3 text-gray-400 pointer-events-none z-10" 
-          />
-          
-          <input
-            ref={inputRef}
-            type="text"
-            placeholder="חפש מוצרים..."
-            value={localQuery}
-            onChange={handleInputChange}
-            onKeyDown={handleKeyPress}
-            onFocus={() => setIsOpen(true)}
-            className="w-full pr-12 pl-10 py-2.5 border border-gray-300 rounded-lg
-                     focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent
-                     bg-white text-gray-900 placeholder-gray-500 text-sm"
-            dir="rtl"
-          />
-          
-          {localQuery && (
-            <button
-              onClick={handleClear}
-              className="absolute left-3 text-gray-400 hover:text-gray-600 z-10"
-            >
-              <X size={16} />
-            </button>
-          )}
+    <div className="relative w-full" ref={panelRef}>
+      {/* Search Input */}
+      <div className={`relative flex items-center bg-gray-50 rounded-xl transition-all ${
+        isFocused ? 'ring-2 ring-[#FFA066]/30 bg-white' : ''
+      }`}>
+        {/* Search Icon */}
+        <div className="absolute right-3 pointer-events-none">
+          <Search className={`w-4 h-4 transition-colors ${
+            isFocused ? 'text-[#FFA066]' : 'text-gray-400'
+          }`} />
         </div>
+        
+        {/* Input Field */}
+        <input
+          ref={inputRef}
+          type="text"
+          value={searchQuery}
+          onChange={handleInputChange}
+          onFocus={() => {
+            setIsFocused(true);
+            if (searchQuery.trim()) setShowSuggestions(true);
+          }}
+          onBlur={() => setIsFocused(false)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              e.preventDefault();
+              handleSearch();
+            }
+            if (e.key === 'Escape') {
+              setShowSuggestions(false);
+              inputRef.current?.blur();
+            }
+          }}
+          placeholder="חיפוש מוצרים, מוכרים..."
+          className="w-full py-2.5 pr-10 pl-8 bg-transparent text-sm text-gray-900 
+                   placeholder-gray-400 outline-none"
+          dir="rtl"
+        />
+        
+        {/* Clear Button */}
+        <AnimatePresence>
+          {searchQuery && (
+            <motion.button
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.8 }}
+              onClick={handleClear}
+              className="absolute left-2 p-1.5 hover:bg-gray-100 rounded-lg transition-colors"
+            >
+              <X className="w-3.5 h-3.5 text-gray-500" />
+            </motion.button>
+          )}
+        </AnimatePresence>
       </div>
 
-      {/* Suggestions Panel */}
-      {showSuggestions && (
-        <div className="absolute top-full right-0 left-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-80 overflow-y-auto">
-          
-          {/* טעינה */}
-          {isSearching && localQuery.length >= 2 && (
-            <div className="p-4 text-center text-gray-500">
-              <div className="inline-flex items-center gap-2">
-                <div className="w-4 h-4 border-2 border-orange-500 border-t-transparent rounded-full animate-spin"></div>
-                <span>מחפש...</span>
-              </div>
-            </div>
-          )}
-
-          {/* תוצאות חיפוש */}
-          {searchResults.length > 0 && (
-            <div>
-              <div className="px-3 py-2 border-b border-gray-100">
-                <div className="flex items-center gap-2 text-sm font-medium text-gray-700">
-                  <TrendingUp size={16} />
-                  <span>תוצאות</span>
-                </div>
-              </div>
-              
-              {searchResults.slice(0, 5).map((product, index) => (
-                <button
-                  key={product._id || index}
-                  onClick={() => handleResultClick(product)}
-                  className="w-full p-3 hover:bg-gray-50 flex items-center gap-3 text-right border-b border-gray-50 last:border-b-0"
-                >
-                  <div className="w-10 h-10 bg-gray-200 rounded-md flex-shrink-0 overflow-hidden">
-                    {product.image && (
-                      <img 
-                        src={product.image} 
-                        alt={product.title}
-                        className="w-full h-full object-cover"
-                      />
-                    )}
-                  </div>
-                  
-                  <div className="flex-1 min-w-0 text-right">
-                    <div className="font-medium text-gray-900 text-sm truncate">
-                      {product.title}
-                    </div>
-                    {product.price && (
-                      <div className="text-xs text-orange-600 font-medium">
-                        ₪{product.price}
-                      </div>
-                    )}
-                  </div>
-                </button>
-              ))}
-            </div>
-          )}
-
-          {/* היסטוריית חיפושים */}
-          {searchHistory.length > 0 && localQuery.length < 2 && (
-            <div>
-              <div className="px-3 py-2 border-b border-gray-100">
-                <div className="flex items-center gap-2 text-sm font-medium text-gray-700">
-                  <Clock size={16} />
-                  <span>חיפושים אחרונים</span>
-                </div>
-              </div>
-              
-              {searchHistory.map((query, index) => (
-                <button
-                  key={index}
-                  onClick={() => handleHistoryClick(query)}
-                  className="w-full p-3 hover:bg-gray-50 flex items-center gap-3 text-right"
-                >
-                  <Clock size={16} className="text-gray-400 flex-shrink-0" />
-                  <span className="text-gray-700 text-sm">{query}</span>
-                </button>
-              ))}
-            </div>
-          )}
-
-          {/* אין תוצאות */}
-          {!isSearching && localQuery.length >= 2 && searchResults.length === 0 && (
-            <div className="p-4 text-center text-gray-500">
-              <div className="text-sm">לא נמצאו תוצאות עבור "{localQuery}"</div>
+      {/* Suggestions Dropdown */}
+      <AnimatePresence>
+        {showSuggestions && suggestions.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
+            className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-lg 
+                     border border-gray-100 overflow-hidden z-50 max-h-80 overflow-y-auto"
+          >
+            {suggestions.map((suggestion, index) => (
               <button
-                onClick={() => handleSearch()}
-                className="mt-2 text-orange-600 hover:text-orange-700 text-sm font-medium"
+                key={index}
+                onClick={() => handleSuggestionClick(suggestion)}
+                className="w-full px-4 py-3 flex items-center gap-3 hover:bg-gray-50 
+                         transition-colors text-right border-b border-gray-50 last:border-0"
+                dir="rtl"
               >
-                חפש בכל המוצרים
+                {/* Icon based on type */}
+                <div className={`p-2 rounded-lg ${
+                  suggestion.type === 'vendor' ? 'bg-blue-50 text-blue-600' :
+                  suggestion.type === 'product' ? 'bg-green-50 text-green-600' :
+                  'bg-gray-50 text-gray-600'
+                }`}>
+                  <Search className="w-3.5 h-3.5" />
+                </div>
+                
+                {/* Text */}
+                <div className="flex-1 text-right">
+                  <div className="text-sm font-medium text-gray-900">
+                    {suggestion.text}
+                  </div>
+                  {suggestion.subtitle && (
+                    <div className="text-xs text-gray-500 mt-0.5">
+                      {suggestion.subtitle}
+                    </div>
+                  )}
+                </div>
+                
+                {/* Type Badge */}
+                <div className={`px-2 py-1 rounded-md text-xs font-medium ${
+                  suggestion.type === 'vendor' ? 'bg-blue-100 text-blue-700' :
+                  suggestion.type === 'product' ? 'bg-green-100 text-green-700' :
+                  'bg-gray-100 text-gray-700'
+                }`}>
+                  {suggestion.type === 'vendor' ? 'מוכר' :
+                   suggestion.type === 'product' ? 'מוצר' :
+                   'חיפוש'}
+                </div>
               </button>
-            </div>
-          )}
-        </div>
-      )}
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Loading Indicator */}
+      <AnimatePresence>
+        {isSearching && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="absolute inset-0 bg-white/80 rounded-xl flex items-center justify-center"
+          >
+            <div className="w-5 h-5 border-2 border-[#FFA066] border-t-transparent rounded-full animate-spin" />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

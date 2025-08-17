@@ -1,11 +1,13 @@
-// // product-viewer/components/ProductFeed.jsx - עם Debug panel
+﻿'use client';
+
+// // product-viewer/components/ProductFeed.jsx - ׳¢׳ Debug panel
 // import React, { useEffect, useRef, useCallback } from 'react';
 // import { useProductViewer } from '../../contexts/ProductViewerContext.jsx';
 // import ProductCard from './ProductCard/index.jsx';
 // import ProductDetailsModal from './ProductCard/ProductDetailsModal';
 // import SearchConnector from '../common/SearchConnector.jsx';
 
-// // 🐛 קומפוננט Debug זמני (הסר אחרי התיקון)
+// // נ› ׳§׳•׳׳₪׳•׳ ׳ ׳˜ Debug ׳–׳׳ ׳™ (׳”׳¡׳¨ ׳׳—׳¨׳™ ׳”׳×׳™׳§׳•׳)
 // const PaginationDebug = () => {
 //   const { 
 //     products, 
@@ -17,22 +19,22 @@
 //     loadMoreProducts 
 //   } = useProductViewer();
 
-//   // הצג רק במצב פיתוח
+//   // ׳”׳¦׳’ ׳¨׳§ ׳‘׳׳¦׳‘ ׳₪׳™׳×׳•׳—
 //   if (process.env.NODE_ENV !== 'development') {
 //     return null;
 //   }
 
 //   return (
 //     <div className="fixed bottom-4 left-4 bg-black/90 text-white p-4 rounded-lg text-xs font-mono z-50 max-w-xs">
-//       <div className="font-bold mb-2 text-yellow-400">🐛 Pagination Debug</div>
+//       <div className="font-bold mb-2 text-yellow-400">נ› Pagination Debug</div>
       
 //       <div className="space-y-1">
-//         <div>📦 Products: <span className="text-green-400">{products?.length || 0}</span></div>
-//         <div>📄 Page: <span className="text-blue-400">{debugInfo?.page || 'N/A'}</span></div>
-//         <div>🔄 Loading: <span className={loading ? 'text-red-400' : 'text-green-400'}>{loading ? 'Yes' : 'No'}</span></div>
-//         <div>➕ LoadMore: <span className={loadingMore ? 'text-red-400' : 'text-green-400'}>{loadingMore ? 'Yes' : 'No'}</span></div>
-//         <div>📊 HasMore: <span className={hasMore ? 'text-green-400' : 'text-red-400'}>{hasMore ? 'Yes' : 'No'}</span></div>
-//         <div>🔍 SearchMode: <span className={searchMode ? 'text-orange-400' : 'text-green-400'}>{searchMode ? 'Yes' : 'No'}</span></div>
+//         <div>נ“¦ Products: <span className="text-green-400">{products?.length || 0}</span></div>
+//         <div>נ“„ Page: <span className="text-blue-400">{debugInfo?.page || 'N/A'}</span></div>
+//         <div>נ”„ Loading: <span className={loading ? 'text-red-400' : 'text-green-400'}>{loading ? 'Yes' : 'No'}</span></div>
+//         <div>ג• LoadMore: <span className={loadingMore ? 'text-red-400' : 'text-green-400'}>{loadingMore ? 'Yes' : 'No'}</span></div>
+//         <div>נ“ HasMore: <span className={hasMore ? 'text-green-400' : 'text-red-400'}>{hasMore ? 'Yes' : 'No'}</span></div>
+//         <div>נ” SearchMode: <span className={searchMode ? 'text-orange-400' : 'text-green-400'}>{searchMode ? 'Yes' : 'No'}</span></div>
 //       </div>
       
 //       <div className="mt-3 pt-2 border-t border-gray-600">
@@ -41,7 +43,7 @@
 //           disabled={!hasMore || loadingMore || searchMode}
 //           className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 disabled:cursor-not-allowed px-2 py-1 rounded text-xs"
 //         >
-//           🔄 Test Load More
+//           נ”„ Test Load More
 //         </button>
 //       </div>
       
@@ -55,7 +57,7 @@
 // };
 
 // /**
-//  * רכיב תצוגת מצב טעינה
+//  * ׳¨׳›׳™׳‘ ׳×׳¦׳•׳’׳× ׳׳¦׳‘ ׳˜׳¢׳™׳ ׳”
 //  */
 // const LoadingState = () => (
 //   <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -66,37 +68,37 @@
 // );
 
 // /**
-//  * רכיב תצוגת שגיאה
+//  * ׳¨׳›׳™׳‘ ׳×׳¦׳•׳’׳× ׳©׳’׳™׳׳”
 //  */
 // const ErrorState = ({ message }) => (
 //   <div className="min-h-screen flex items-center justify-center bg-gray-50">
 //     <div className="text-center px-4">
-//       <div className="text-[#FF6B6B] text-lg mb-2 font-medium">שגיאה</div>
+//       <div className="text-[#FF6B6B] text-lg mb-2 font-medium">׳©׳’׳™׳׳”</div>
 //       <div className="text-gray-600">{message}</div>
 //     </div>
 //   </div>
 // );
 
 // /**
-//  * רכיב תצוגה כאשר אין מוצרים
+//  * ׳¨׳›׳™׳‘ ׳×׳¦׳•׳’׳” ׳›׳׳©׳¨ ׳׳™׳ ׳׳•׳¦׳¨׳™׳
 //  */
 // const EmptyState = () => (
 //   <div className="min-h-screen flex items-center justify-center bg-gray-50">
 //     <div className="text-center px-4">
-//       <div className="text-[#FFA066] text-lg mb-2 font-medium">אין מוצרים</div>
-//       <div className="text-gray-600">נסה לבחור קטגוריה אחרת</div>
+//       <div className="text-[#FFA066] text-lg mb-2 font-medium">׳׳™׳ ׳׳•׳¦׳¨׳™׳</div>
+//       <div className="text-gray-600">׳ ׳¡׳” ׳׳‘׳—׳•׳¨ ׳§׳˜׳’׳•׳¨׳™׳” ׳׳—׳¨׳×</div>
 //     </div>
 //   </div>
 // );
 
 // /**
-//  * רכיב כפתור טעינת עוד
+//  * ׳¨׳›׳™׳‘ ׳›׳₪׳×׳•׳¨ ׳˜׳¢׳™׳ ׳× ׳¢׳•׳“
 //  */
 // const LoadMoreButton = ({ onClick, loading, hasMore, searchMode }) => {
-//   // 🔧 הוסף debug logging
+//   // נ”§ ׳”׳•׳¡׳£ debug logging
 //   console.log('LoadMoreButton render:', { hasMore, loading, searchMode });
   
-//   // אל תציג כפתור אם אנחנו במצב חיפוש
+//   // ׳׳ ׳×׳¦׳™׳’ ׳›׳₪׳×׳•׳¨ ׳׳ ׳׳ ׳—׳ ׳• ׳‘׳׳¦׳‘ ׳—׳™׳₪׳•׳©
 //   if (searchMode) {
 //     return null;
 //   }
@@ -111,10 +113,10 @@
 //         {loading ? (
 //           <div className="flex items-center gap-2">
 //             <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-//             <span>טוען...</span>
+//             <span>׳˜׳•׳¢׳...</span>
 //           </div>
 //         ) : (
-//           'טען עוד מוצרים'
+//           '׳˜׳¢׳ ׳¢׳•׳“ ׳׳•׳¦׳¨׳™׳'
 //         )}
 //       </button>
 //     </div>
@@ -122,7 +124,7 @@
 // };
 
 // /**
-//  * רכיב פיד מוצרים ראשי - תצוגת גריד
+//  * ׳¨׳›׳™׳‘ ׳₪׳™׳“ ׳׳•׳¦׳¨׳™׳ ׳¨׳׳©׳™ - ׳×׳¦׳•׳’׳× ׳’׳¨׳™׳“
 //  */
 // const ProductFeed = () => {
 //   const { 
@@ -133,7 +135,7 @@
 //     isModalOpen,
 //     loadingMore,
 //     hasMore,
-//     searchMode, // 🔧 הוסף searchMode
+//     searchMode, // נ”§ ׳”׳•׳¡׳£ searchMode
 //     loadMoreProducts,
 //     openProductModal,
 //     closeProductModal,
@@ -143,11 +145,11 @@
 //   const observerRef = useRef();
 //   const loadMoreRef = useRef(null);
 
-//   // 🔧 עדכן Intersection Observer - בדוק searchMode
+//   // נ”§ ׳¢׳“׳›׳ Intersection Observer - ׳‘׳“׳•׳§ searchMode
 //   useEffect(() => {
-//     // אל תפעיל auto-load במצב חיפוש
+//     // ׳׳ ׳×׳₪׳¢׳™׳ auto-load ׳‘׳׳¦׳‘ ׳—׳™׳₪׳•׳©
 //     if (!hasMore || loadingMore || searchMode) {
-//       console.log('🚫 מבטל Intersection Observer:', { hasMore, loadingMore, searchMode });
+//       console.log('נ« ׳׳‘׳˜׳ Intersection Observer:', { hasMore, loadingMore, searchMode });
 //       if (observerRef.current) {
 //         observerRef.current.disconnect();
 //       }
@@ -162,7 +164,7 @@
 
 //     const callback = (entries) => {
 //       if (entries[0].isIntersecting && hasMore && !loadingMore && !searchMode) {
-//         console.log('🔄 טוען מוצרים נוספים אוטומטית...');
+//         console.log('נ”„ ׳˜׳•׳¢׳ ׳׳•׳¦׳¨׳™׳ ׳ ׳•׳¡׳₪׳™׳ ׳׳•׳˜׳•׳׳˜׳™׳×...');
 //         loadMoreProducts();
 //       }
 //     };
@@ -178,13 +180,13 @@
 //         observerRef.current.disconnect();
 //       }
 //     };
-//   }, [hasMore, loadingMore, searchMode, loadMoreProducts]); // 🔧 הוסף searchMode
+//   }, [hasMore, loadingMore, searchMode, loadMoreProducts]); // נ”§ ׳”׳•׳¡׳£ searchMode
   
-//   // טיפול בשיתוף
+//   // ׳˜׳™׳₪׳•׳ ׳‘׳©׳™׳×׳•׳£
 //   const handleShare = useCallback(() => {
 //     if (navigator.share && selectedProduct) {
 //       navigator.share({
-//         title: selectedProduct.title || 'מוצר מומלץ',
+//         title: selectedProduct.title || '׳׳•׳¦׳¨ ׳׳•׳׳׳¥',
 //         url: window.location.href,
 //       });
 //     } else if (selectedProduct) {
@@ -192,7 +194,7 @@
 //     }
 //   }, [selectedProduct]);
 
-//   // 🔧 הדפס debug info
+//   // נ”§ ׳”׳“׳₪׳¡ debug info
 //   console.log('ProductFeed render:', {
 //     loading,
 //     productsCount: products?.length,
@@ -207,14 +209,14 @@
 
 //   return (
 //     <>
-//       {/* מחבר בין החיפוש למוצרים */}
+//       {/* ׳׳—׳‘׳¨ ׳‘׳™׳ ׳”׳—׳™׳₪׳•׳© ׳׳׳•׳¦׳¨׳™׳ */}
 //       <SearchConnector />
       
-//       {/* 🐛 Debug panel - הסר אחרי התיקון */}
+//       {/* נ› Debug panel - ׳”׳¡׳¨ ׳׳—׳¨׳™ ׳”׳×׳™׳§׳•׳ */}
 //       {/* <PaginationDebug /> */}
       
 //       <div className="min-h-screen bg-gray-50 pt-20 pb-8">
-//         {/* גריד מוצרים */}
+//         {/* ׳’׳¨׳™׳“ ׳׳•׳¦׳¨׳™׳ */}
 //         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 //           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 //             {products.map((product) => (
@@ -226,7 +228,7 @@
 //             ))}
 //           </div>
 
-//           {/* 🔧 אזור לטעינת עוד - מותנה ב-searchMode */}
+//           {/* נ”§ ׳׳–׳•׳¨ ׳׳˜׳¢׳™׳ ׳× ׳¢׳•׳“ - ׳׳•׳×׳ ׳” ׳‘-searchMode */}
 //           {!searchMode && hasMore && (
 //             <div ref={loadMoreRef} className="mt-8">
 //               {loadingMore ? (
@@ -244,15 +246,15 @@
 //             </div>
 //           )}
           
-//           {/* 🔧 הודעה אם אנחנו במצב חיפוש */}
+//           {/* נ”§ ׳”׳•׳“׳¢׳” ׳׳ ׳׳ ׳—׳ ׳• ׳‘׳׳¦׳‘ ׳—׳™׳₪׳•׳© */}
 //           {searchMode && (
 //             <div className="mt-8 text-center text-gray-500">
-//               <div className="text-sm">מצב חיפוש - {products.length} תוצאות</div>
+//               <div className="text-sm">׳׳¦׳‘ ׳—׳™׳₪׳•׳© - {products.length} ׳×׳•׳¦׳׳•׳×</div>
 //             </div>
 //           )}
 //         </div>
 
-//         {/* מודאל פרטי מוצר */}
+//         {/* ׳׳•׳“׳׳ ׳₪׳¨׳˜׳™ ׳׳•׳¦׳¨ */}
 //         {isModalOpen && selectedProduct && (
 //           <ProductDetailsModal 
 //             product={selectedProduct} 
@@ -275,16 +277,16 @@
 // };
 
 // export default ProductFeed;
-// src/components/product-viewer/ProductFeed.jsx - 🚀 גרסה מעודכנת עם VendorInfoCard משודרג
+// src/components/product-viewer/ProductFeed.jsx - נ€ ׳’׳¨׳¡׳” ׳׳¢׳•׳“׳›׳ ׳× ׳¢׳ VendorInfoCard ׳׳©׳•׳“׳¨׳’
 import React, { useEffect, useRef, useCallback, useMemo } from 'react';
 import { useProductModal } from '../../contexts/ProductModalContext';
 import { useProductViewer } from '../../contexts/ProductViewerContext';
 import ProductCard from './ProductCard/index.jsx';
 import ProductDetailsModal from './ProductCard/ProductDetailsModal';
-import VendorInfoCard from './VendorInfoCard.jsx'; // 🆕 יבוא VendorInfoCard החדש
+import VendorInfoCard from './VendorInfoCard.jsx'; // נ†• ׳™׳‘׳•׳ VendorInfoCard ׳”׳—׳“׳©
 
 /**
- * רכיבי UI פשוטים עם React.memo
+ * ׳¨׳›׳™׳‘׳™ UI ׳₪׳©׳•׳˜׳™׳ ׳¢׳ React.memo
  */
 const LoadingState = React.memo(() => (
   <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
@@ -297,7 +299,7 @@ const LoadingState = React.memo(() => (
 const ErrorState = React.memo(({ message }) => (
   <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
     <div className="text-center max-w-md">
-      <div className="text-[#FF6B6B] text-lg sm:text-xl mb-2 font-medium">שגיאה</div>
+      <div className="text-[#FF6B6B] text-lg sm:text-xl mb-2 font-medium">׳©׳’׳™׳׳”</div>
       <div className="text-gray-600 text-sm sm:text-base">{message}</div>
     </div>
   </div>
@@ -307,10 +309,10 @@ const EmptyState = React.memo(({ isSearchMode }) => (
   <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
     <div className="text-center max-w-md">
       <div className="text-[#FFA066] text-lg sm:text-xl mb-2 font-medium">
-        {isSearchMode ? 'לא נמצאו תוצאות' : 'אין מוצרים'}
+        {isSearchMode ? '׳׳ ׳ ׳׳¦׳׳• ׳×׳•׳¦׳׳•׳×' : '׳׳™׳ ׳׳•׳¦׳¨׳™׳'}
       </div>
       <div className="text-gray-600 text-sm sm:text-base">
-        {isSearchMode ? 'נסה לשנות את החיפוש' : 'נסה לבחור קטגוריה אחרת'}
+        {isSearchMode ? '׳ ׳¡׳” ׳׳©׳ ׳•׳× ׳׳× ׳”׳—׳™׳₪׳•׳©' : '׳ ׳¡׳” ׳׳‘׳—׳•׳¨ ׳§׳˜׳’׳•׳¨׳™׳” ׳׳—׳¨׳×'}
       </div>
     </div>
   </div>
@@ -334,25 +336,25 @@ const LoadMoreButton = React.memo(({ onClick, loading }) => (
       {loading ? (
         <div className="flex items-center gap-2">
           <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-          <span className="hidden sm:inline">טוען...</span>
+          <span className="hidden sm:inline">׳˜׳•׳¢׳...</span>
         </div>
       ) : (
-        'טען עוד מוצרים'
+        '׳˜׳¢׳ ׳¢׳•׳“ ׳׳•׳¦׳¨׳™׳'
       )}
     </button>
   </div>
 ));
 
 /**
- * 🚀 ProductFeed מאופטמז - מונע כפילויות ורינדורים מיותרים
+ * נ€ ProductFeed ׳׳׳•׳₪׳˜׳׳– - ׳׳•׳ ׳¢ ׳›׳₪׳™׳׳•׳™׳•׳× ׳•׳¨׳™׳ ׳“׳•׳¨׳™׳ ׳׳™׳•׳×׳¨׳™׳
  * 
- * שינויים עיקריים:
- * ✅ שימוש ב-VendorInfoCard החדש עם כפתור שיתוף
- * ✅ React.memo לכל הרכיבים
- * ✅ useMemo לכל החישובים
- * ✅ useCallback לפונקציות
- * ✅ הפחתת console.log לרמה מינימלית
- * ✅ optimized dependency arrays
+ * ׳©׳™׳ ׳•׳™׳™׳ ׳¢׳™׳§׳¨׳™׳™׳:
+ * ג… ׳©׳™׳׳•׳© ׳‘-VendorInfoCard ׳”׳—׳“׳© ׳¢׳ ׳›׳₪׳×׳•׳¨ ׳©׳™׳×׳•׳£
+ * ג… React.memo ׳׳›׳ ׳”׳¨׳›׳™׳‘׳™׳
+ * ג… useMemo ׳׳›׳ ׳”׳—׳™׳©׳•׳‘׳™׳
+ * ג… useCallback ׳׳₪׳•׳ ׳§׳¦׳™׳•׳×
+ * ג… ׳”׳₪׳—׳×׳× console.log ׳׳¨׳׳” ׳׳™׳ ׳™׳׳׳™׳×
+ * ג… optimized dependency arrays
  */
 const ProductFeed = React.memo(({ 
   products: propProducts = [],
@@ -379,7 +381,7 @@ const ProductFeed = React.memo(({
   const loadMoreRef = useRef(null);
   const lastRenderTime = useRef(Date.now());
   
-  // 🛡️ נתונים מוגנים עם memoization
+  // נ›¡ן¸ ׳ ׳×׳•׳ ׳™׳ ׳׳•׳’׳ ׳™׳ ׳¢׳ memoization
   const safeData = useMemo(() => ({
     products: Array.isArray(propProducts) ? propProducts : [],
     loading: Boolean(propLoading),
@@ -389,7 +391,7 @@ const ProductFeed = React.memo(({
     loadMore: typeof propLoadMore === 'function' ? propLoadMore : null
   }), [propProducts, propLoading, propHasMore, propIsSearchMode, propError, propLoadMore]);
   
-  // 🎯 Debug מוגבל - רק כל 500ms
+  // נ¯ Debug ׳׳•׳’׳‘׳ - ׳¨׳§ ׳›׳ 500ms
   const throttledDebug = useMemo(() => {
     if (process.env.NODE_ENV !== 'development') return null;
     
@@ -407,14 +409,14 @@ const ProductFeed = React.memo(({
     };
   }, [safeData.products.length, safeData.loading, safeData.hasMore, safeData.isSearchMode, vendorInfo]);
   
-  // Log רק אם יש שינוי משמעותי
+  // Log ׳¨׳§ ׳׳ ׳™׳© ׳©׳™׳ ׳•׳™ ׳׳©׳׳¢׳•׳×׳™
   useEffect(() => {
     if (throttledDebug) {
-      console.log('🎬 ProductFeed:', throttledDebug);
+      console.log('נ¬ ProductFeed:', throttledDebug);
     }
   }, [throttledDebug]);
   
-  // 🎯 Intersection Observer מאופטמז
+  // נ¯ Intersection Observer ׳׳׳•׳₪׳˜׳׳–
   useEffect(() => {
     if (!safeData.hasMore || !safeData.loadMore || safeData.isSearchMode || safeData.loading) {
       if (observerRef.current) {
@@ -448,11 +450,11 @@ const ProductFeed = React.memo(({
     };
   }, [safeData.hasMore, safeData.loadMore, safeData.isSearchMode, safeData.loading]);
   
-  // 🎯 פונקציית שיתוף ממוייזת
+  // נ¯ ׳₪׳•׳ ׳§׳¦׳™׳™׳× ׳©׳™׳×׳•׳£ ׳׳׳•׳™׳™׳–׳×
   const handleShare = useCallback(() => {
     if (navigator.share && selectedProduct) {
       navigator.share({
-        title: selectedProduct.title || 'מוצר מומלץ',
+        title: selectedProduct.title || '׳׳•׳¦׳¨ ׳׳•׳׳׳¥',
         url: window.location.href,
       }).catch(() => {
         navigator.clipboard?.writeText(window.location.href);
@@ -462,7 +464,7 @@ const ProductFeed = React.memo(({
     }
   }, [selectedProduct]);
   
-  // 🎯 רכיב גריד מוצרים ממוייז - רספונסיבי מלא
+  // נ¯ ׳¨׳›׳™׳‘ ׳’׳¨׳™׳“ ׳׳•׳¦׳¨׳™׳ ׳׳׳•׳™׳™׳– - ׳¨׳¡׳₪׳•׳ ׳¡׳™׳‘׳™ ׳׳׳
   const ProductGrid = useMemo(() => (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 
                    gap-4 sm:gap-5 lg:gap-6">
@@ -478,7 +480,7 @@ const ProductFeed = React.memo(({
     </div>
   ), [safeData.products, openProductModal, isProductFavorite, toggleFavorite]);
   
-  // 🎯 החלטת מצב תצוגה
+  // נ¯ ׳”׳—׳׳˜׳× ׳׳¦׳‘ ׳×׳¦׳•׳’׳”
   if (safeData.loading && safeData.products.length === 0) {
     return <LoadingState />;
   }
@@ -494,7 +496,7 @@ const ProductFeed = React.memo(({
   return (
     <div className="min-h-screen bg-gray-50 pt-24 sm:pt-28 pb-6 sm:pb-8">
       <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
-        {/* 🆕 כרטיס מוכר משודרג עם כפתור שיתוף - עם מרווח נוסף מלמעלה */}
+        {/* נ†• ׳›׳¨׳˜׳™׳¡ ׳׳•׳›׳¨ ׳׳©׳•׳“׳¨׳’ ׳¢׳ ׳›׳₪׳×׳•׳¨ ׳©׳™׳×׳•׳£ - ׳¢׳ ׳׳¨׳•׳•׳— ׳ ׳•׳¡׳£ ׳׳׳׳¢׳׳” */}
         {vendorInfo && (
           <VendorInfoCard 
             vendor={vendorInfo}
@@ -502,10 +504,10 @@ const ProductFeed = React.memo(({
           />
         )}
         
-        {/* Debug מוגבל */}
+        {/* Debug ׳׳•׳’׳‘׳ */}
         {process.env.NODE_ENV === 'development' && debug && (
           <div className="mb-4 p-2 sm:p-3 bg-yellow-100 rounded-lg text-xs sm:text-sm">
-            <strong>Debug:</strong> {safeData.products.length} מוצרים | 
+            <strong>Debug:</strong> {safeData.products.length} ׳׳•׳¦׳¨׳™׳ | 
             Search Mode: {safeData.isSearchMode ? 'Yes' : 'No'} |
             <span className="hidden sm:inline">
               Vendor: {vendorInfo?.fullName || 'None'} |
@@ -514,10 +516,10 @@ const ProductFeed = React.memo(({
           </div>
         )}
         
-        {/* גריד מוצרים */}
+        {/* ׳’׳¨׳™׳“ ׳׳•׳¦׳¨׳™׳ */}
         {ProductGrid}
 
-        {/* אזור טעינת עוד */}
+        {/* ׳׳–׳•׳¨ ׳˜׳¢׳™׳ ׳× ׳¢׳•׳“ */}
         {!safeData.isSearchMode && safeData.hasMore && safeData.loadMore && (
           <div ref={loadMoreRef} className="mt-6 sm:mt-8">
             <LoadMoreButton 
@@ -527,20 +529,20 @@ const ProductFeed = React.memo(({
           </div>
         )}
         
-        {/* הודעה במצב חיפוש */}
+        {/* ׳”׳•׳“׳¢׳” ׳‘׳׳¦׳‘ ׳—׳™׳₪׳•׳© */}
         {safeData.isSearchMode && (
           <div className="mt-6 sm:mt-8 text-center text-gray-500">
             <div className="text-sm sm:text-base">
               {safeData.products.length === 0 
-                ? 'לא נמצאו תוצאות' 
-                : `נמצאו ${safeData.products.length} תוצאות`
+                ? '׳׳ ׳ ׳׳¦׳׳• ׳×׳•׳¦׳׳•׳×' 
+                : `׳ ׳׳¦׳׳• ${safeData.products.length} ׳×׳•׳¦׳׳•׳×`
               }
             </div>
           </div>
         )}
       </div>
 
-      {/* מודאל מוצר */}
+      {/* ׳׳•׳“׳׳ ׳׳•׳¦׳¨ */}
       {isModalOpen && selectedProduct && (
         <ProductDetailsModal 
           product={specificProduct || selectedProduct} 
